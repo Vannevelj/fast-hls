@@ -12,9 +12,18 @@ namespace FastHls
         public void Start(PlaylistType playlistType, int version, double targetDuration) {
             _playlist += "#EXTM3U\r\n";
             _playlist += "#EXT-X-PLAYLIST-TYPE:VOD\r\n";
-            _playlist += "#EXT-X-TARGETDURATION:10\r\n";
-            _playlist += "#EXT-X-VERSION:8\r\n";
+            _playlist += $"#EXT-X-TARGETDURATION:{targetDuration}\r\n";
+            _playlist += $"#EXT-X-VERSION:{version}\r\n";
             _playlist += "#EXT-X-MEDIA-SEQUENCE:0\r\n";
+        }
+
+        public void AddMediaFile(string path, double duration) {
+            _playlist += $"#EXTINF:{duration:F1},\r\n";
+            _playlist += $"{path}\r\n";
+        }
+
+        public void Finish() {
+            _playlist += "#EXT-X-ENDLIST";
         }
 
         public async Task WriteToStream(Stream output) {
