@@ -2,7 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>fast_hls</RootNamespace>
+    <RootNamespace>FastHls</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="sharpsource" Version="0.3.0" />
+  </ItemGroup>
 
 </Project>

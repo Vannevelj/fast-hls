@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace fast_hls_console
+namespace FastHlsConsole
 {
     class Program
     {
