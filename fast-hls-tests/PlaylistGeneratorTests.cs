@@ -36,6 +36,42 @@ namespace FastHlsTests
         }
 
         [Fact]
+        public async Task WritesEvent()
+        {
+            generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-PLAYLIST-TYPE:EVENT
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:8
+#EXT-X-MEDIA-SEQUENCE:0
+");
+        }
+
+        [Fact]
+        public async Task WritesTargetDuration()
+        {
+            generator.Start(PlaylistType.VOD, version: 8, targetDuration: 50);
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-PLAYLIST-TYPE:VOD
+#EXT-X-TARGETDURATION:50
+#EXT-X-VERSION:8
+#EXT-X-MEDIA-SEQUENCE:0
+");
+        }
+
+        [Fact]
+        public async Task WritesVersion()
+        {
+            generator.Start(PlaylistType.VOD, version: 4, targetDuration: 10);
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-PLAYLIST-TYPE:VOD
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:4
+#EXT-X-MEDIA-SEQUENCE:0
+");
+        }
+
+        [Fact]
         public async Task WritesMediaFiles()
         {
             generator.Start(PlaylistType.VOD, version: 8, targetDuration: 10);
