@@ -27,7 +27,7 @@ namespace FastHls
         }
 
         public async Task AddMedia(
-            MediaType mediaType, 
+            MediaType mediaType,
             string groupId, 
             string name, 
             string uri = null, 
@@ -69,8 +69,8 @@ namespace FastHls
                 text += $",CHARACTERISTICS=\"{string.Join(",", characteristics)}\"";
             }
 
-            if (text != null) {
-                text += $"\r\n{uri}\r\n";
+            if (uri != null) {
+                text += $",URI=\"{uri}\"";
             }
             
             await Append(text);

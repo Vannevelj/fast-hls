@@ -47,8 +47,24 @@ namespace FastHlsTests
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-VERSION:3
 #EXT-X-INDEPENDENT-SEGMENTS
-#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID=""audio-hi"",NAME=""Dutch"",LANGUAGE=""nl-BE"",ASSOC-LANGUAGE=""nl-NL"",DEFAULT=YES,AUTOSELECT=YES,FORCED=NO,CHARACTERISTICS=""public.accessibility.describes-video""
-dutch.m3u8");
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID=""audio-hi"",NAME=""Dutch"",LANGUAGE=""nl-BE"",ASSOC-LANGUAGE=""nl-NL"",DEFAULT=YES,AUTOSELECT=YES,FORCED=NO,CHARACTERISTICS=""public.accessibility.describes-video"",URI=""dutch.m3u8""");
+        }
+
+        [Fact]
+        public async Task WritesClosedCaptionMedia()
+        {
+            await generator.Start(version: 3);
+            await generator.AddMedia(
+                mediaType: MediaType.CLOSEDCAPTIONS,
+                groupId: "audio-hi",
+                name: "Dutch",
+                uri: "dutch.m3u8"
+            );
+
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-INDEPENDENT-SEGMENTS
+#EXT-X-MEDIA:TYPE=CLOSED-CAPTIONS,GROUP-ID=""audio-hi"",NAME=""Dutch""");
         }
 
         [Fact]
