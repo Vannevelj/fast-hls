@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fast-hls", "fast-hls\fast-hls.csproj", "{71305F12-F5A4-455A-B915-19DB7FBA1E49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fast-hls-console", "fast-hls-console\fast-hls-console.csproj", "{AC23C626-498E-4366-AB1D-90B424E6D11C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fast-hls-tests", "fast-hls-tests\fast-hls-tests.csproj", "{3C4EA2FC-E909-40FE-9169-6103BAC0ECBB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fast-hls-benchmarks", "fast-hls-benchmarks\fast-hls-benchmarks.csproj", "{76A49914-65FB-47CA-B032-1C0B428BD3A0}"

@@ -2,15 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <OutputType>Exe</OutputType>
     <RootNamespace>FastHlsBenchmarks</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="benchmarkdotnet" Version="0.12.1" />
+    <ProjectReference Include="..\fast-hls\fast-hls.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\fast-hls\fast-hls.csproj" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
   </ItemGroup>
 
 </Project>
