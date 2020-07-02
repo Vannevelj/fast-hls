@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using FastHls;
 using FastHls.Abstractions;
+using FastHls.Models;
 using Xunit;
 
 namespace FastHlsTests
@@ -135,6 +136,20 @@ http://example.com/ads/ad1.ts
 #EXTINF:10.0,
 http://example.com/movie1/fileSequenceB.ts
 #EXT-X-ENDLIST\r\n");
+        }
+
+        [Fact]
+        public async Task WritesEncryption()
+        {
+            await generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
+            await generator.AddEncryption(Encryption.AES128, "https://example.org/enc", iv: "123ABC", keyformat: "abc", keyformatVersions: new int[] { 1, 2 });
+
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-PLAYLIST-TYPE:EVENT
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:8
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-KEY:METHOD=AES-128,URI=""https://example.org/enc"",IV=""123ABC"",KEYFORMAT=""abc"",KEYFORMATVERSIONS=""1/2""");
         }
     }
 }

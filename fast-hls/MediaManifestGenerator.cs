@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using FastHls.Abstractions;
+using FastHls.Models;
 
 namespace FastHls
 {
@@ -22,6 +23,28 @@ namespace FastHls
 
             if (discontinuitySequence.HasValue) {
                 text += $"EXT-X-DISCONTINUITY-SEQUENCE:{discontinuitySequence.Value}\r\n";
+            }
+
+            await Append(text);
+        }
+
+        public async Task AddEncryption(Encryption encryption, string uri = null, string iv = null, string keyformat = null, int[] keyformatVersions = null) {
+            var text = $"#EXT-X-KEY:METHOD={encryption}";
+
+            if (uri != null) {
+                text += $",URI=\"{uri}\"";
+            }
+
+            if (iv != null) {
+                text += $",IV=\"{iv}\"";
+            }
+
+            if (keyformat != null) {
+                text += $",KEYFORMAT=\"{keyformat}\"";
+            }
+
+            if (keyformatVersions != null) {
+                text += $",KEYFORMATVERSIONS=\"{string.Join("/", keyformatVersions)}\"";
             }
 
             await Append(text);
