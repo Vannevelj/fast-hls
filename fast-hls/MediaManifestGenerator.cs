@@ -22,7 +22,17 @@ namespace FastHls
 #EXT-X-MEDIA-SEQUENCE:0\r\n";
 
             if (discontinuitySequence.HasValue) {
-                text += $"EXT-X-DISCONTINUITY-SEQUENCE:{discontinuitySequence.Value}\r\n";
+                text += $"#EXT-X-DISCONTINUITY-SEQUENCE:{discontinuitySequence.Value}\r\n";
+            }
+
+            await Append(text);
+        }
+
+        public async Task AddStartTag(double offsetInSeconds, bool isPrecise = false) {
+            var text = $"#EXT-X-START:TIME-OFFSET={offsetInSeconds}";
+
+            if (isPrecise) {
+                text += ",PRECISE=YES";
             }
 
             await Append(text);

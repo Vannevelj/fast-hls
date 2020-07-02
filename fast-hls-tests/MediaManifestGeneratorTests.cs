@@ -151,5 +151,19 @@ http://example.com/movie1/fileSequenceB.ts
 #EXT-X-MEDIA-SEQUENCE:0
 #EXT-X-KEY:METHOD=AES-128,URI=""https://example.org/enc"",IV=""123ABC"",KEYFORMAT=""abc"",KEYFORMATVERSIONS=""1/2""");
         }
+
+        [Fact]
+        public async Task WritesStartTag()
+        {
+            await generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
+            await generator.AddStartTag(-10.0, isPrecise: true);
+
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-PLAYLIST-TYPE:EVENT
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:8
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-START:TIME-OFFSET-10.0,PRECISE=YES");
+        }
     }
 }
