@@ -7,7 +7,7 @@ namespace FastHlsBenchmarks
     {
         public static void Main(string[] args)
         {
-            BenchmarkRunner.Run<MediaManifestGeneratorBenchmark>();
+            BenchmarkRunner.Run<ManifestGeneratorBenchmarks>();
         }
     }
 }

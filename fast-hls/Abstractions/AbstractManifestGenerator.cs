@@ -18,8 +18,9 @@ namespace FastHls.Abstractions
             _continuousPersistence = continuousPersistence;
         }
 
-        protected void Append(string text) {
+        protected async Task Append(string text) {
             _playlist.Append(text);
+            await WriteContinuously(text);
         }
 
         public async ValueTask WriteToStream(Stream output)
@@ -27,7 +28,7 @@ namespace FastHls.Abstractions
             await output.WriteAsync(Encoding.UTF8.GetBytes(_playlist.ToString()));
         }
 
-        protected async ValueTask WriteContinuously(string text)
+        private async ValueTask WriteContinuously(string text)
         {
             if (_continuousPersistence && _output != null)
             {

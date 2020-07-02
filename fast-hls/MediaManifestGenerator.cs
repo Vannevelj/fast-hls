@@ -12,7 +12,6 @@ namespace FastHls
 
         public MediaManifestGenerator(Stream output, bool continuousPersistence) : base(output, continuousPersistence) {}
 
-
         public async Task Start(PlaylistType playlistType, int version, double targetDuration, int? discontinuitySequence = null)
         {
             var text = $@"#EXTM3U
@@ -25,29 +24,25 @@ namespace FastHls
                 text += $"EXT-X-DISCONTINUITY-SEQUENCE:{discontinuitySequence.Value}\r\n";
             }
 
-            Append(text);
-            await WriteContinuously(text);
+            await Append(text);
         }
 
         public async Task AddMediaFile(string path, double duration)
         {
             var text = $@"#EXTINF:{duration:F1},\r\n{path}\r\n";
 
-            Append(text);
-            await WriteContinuously(text);
+            await Append(text);
         }
 
         public async Task InsertDiscontinuity() {
             var text = "#EXT-X-DISCONTINUITY\r\n";
-            Append(text);
-            await WriteContinuously(text);
+            await Append(text);
         }
 
         public override async Task Finish() 
         {
             var text = "#EXT-X-ENDLIST\r\n";
-            Append(text);
-            await WriteContinuously(text);
+            await Append(text);
 
             await base.Finish();
         }

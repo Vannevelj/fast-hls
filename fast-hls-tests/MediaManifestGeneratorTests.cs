@@ -2,23 +2,11 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using FastHls;
+using FastHls.Abstractions;
 using Xunit;
 
 namespace FastHlsTests
 {
-    internal static class PlaylistGeneratorExtensions
-    {
-        public static async Task AssertGeneratedContent(this MediaManifestGenerator generator, string content)
-        {
-            var outputStream = new MemoryStream();
-            await generator.WriteToStream(outputStream);
-            outputStream.Position = 0;
-            var output = await new StreamReader(outputStream).ReadToEndAsync();
-
-            Assert.Equal(content, output);
-        }
-    }
-
     public class MediaManifestGeneratorTests
     {
         private MediaManifestGenerator generator = new MediaManifestGenerator();
