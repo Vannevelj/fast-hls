@@ -193,5 +193,33 @@ http://example.com/movie1/fileSequenceB.ts
 #EXT-X-MEDIA-SEQUENCE:0
 #EXT-X-BYTERANGE:9876543");
         }
+
+        [Fact]
+        public async Task WritesMap()
+        {
+            await generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
+            await generator.AddMap(uri: "main.mp4", length: 9_876_543, offset: 123);
+
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-PLAYLIST-TYPE:EVENT
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:8
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-MAP:URI=""main.mp4"",BYTERANGE=""9876543@123""");
+        }
+
+        [Fact]
+        public async Task WritesMap_NoOffset()
+        {
+            await generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
+            await generator.AddMap(uri: "main.mp4", length: 9_876_543);
+
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-PLAYLIST-TYPE:EVENT
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:8
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-MAP:URI=""main.mp4"",BYTERANGE=""9876543""");
+        }
     }
 }

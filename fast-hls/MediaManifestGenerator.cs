@@ -82,6 +82,20 @@ namespace FastHls
             await Append(text);
         }
 
+        public async Task AddMap(string uri, int? length = null, int? offset = null) {
+            var text = $"#EXT-X-MAP:URI=\"{uri}\"";
+
+            if(length.HasValue && !offset.HasValue) {
+                text += $",BYTERANGE=\"{length}\"";
+            }
+
+            if(length.HasValue && offset.HasValue) {
+                text += $",BYTERANGE=\"{length}@{offset}\"";
+            }
+
+            await Append(text);
+        }
+
         public override async Task Finish() 
         {
             var text = "#EXT-X-ENDLIST\r\n";
