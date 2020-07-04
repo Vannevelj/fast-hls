@@ -107,5 +107,21 @@ namespace FastHlsTests
 #EXT-X-INDEPENDENT-SEGMENTS
 #EXT-X-I-FRAME-STREAM-INF:BANDWIDTH=9000000,URI=""high.m3u8"",AVERAGE-BANDWIDTH=8500000,CODECS=""avc1.640029,mp4a.40.2"",RESOLUTION=1024x720,VIDEO=""video-hi""");
         }
+
+        [Fact]
+        public async Task WritesSessionData()
+        {
+            await generator.Start(version: 3);
+            await generator.AddSessionData(
+                dataId: "com.fasthls.custom.field",
+                value: "fast hls is fast",
+                language: "en-UK"
+            );
+
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-INDEPENDENT-SEGMENTS
+#EXT-X-SESSION-DATA:DATA-ID=""com.fasthls.custom.field"",VALUE=""fast hls is fast"",LANGUAGE=""en-UK""");
+        }
     }
 }

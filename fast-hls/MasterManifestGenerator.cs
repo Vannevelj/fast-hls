@@ -28,51 +28,59 @@ namespace FastHls
 
         public async Task AddMedia(
             MediaType mediaType,
-            string groupId, 
-            string name, 
-            string uri = null, 
-            string language = null, 
-            string assocLanguage = null, 
-            bool isDefault = false, 
-            bool autoselect = false, 
-            bool forced = false, 
-            string instreamId = null, 
+            string groupId,
+            string name,
+            string uri = null,
+            string language = null,
+            string assocLanguage = null,
+            bool isDefault = false,
+            bool autoselect = false,
+            bool forced = false,
+            string instreamId = null,
             string[] characteristics = null) // TODO: turn characteristics this into an enum
         {
             var text = $"#EXT-X-MEDIA:TYPE={mediaType},GROUP-ID=\"{groupId}\",NAME=\"{name}\"";
-            
-            if (language != null) {
+
+            if (language != null)
+            {
                 text += $",LANGUAGE=\"{language}\"";
             }
 
-            if (assocLanguage != null) {
+            if (assocLanguage != null)
+            {
                 text += $",ASSOC-LANGUAGE=\"{assocLanguage}\"";
             }
 
-            if (isDefault) {
+            if (isDefault)
+            {
                 text += ",DEFAULT=YES";
             }
 
-            if (autoselect) {
+            if (autoselect)
+            {
                 text += ",AUTOSELECT=YES";
             }
 
-            if (forced) {
+            if (forced)
+            {
                 text += ",FORCED=YES";
             }
 
-            if (instreamId != null) {
+            if (instreamId != null)
+            {
                 text += $",INSTREAM-ID=\"{instreamId}\"";
             }
 
-            if (characteristics != null) {
+            if (characteristics != null)
+            {
                 text += $",CHARACTERISTICS=\"{string.Join(",", characteristics)}\"";
             }
 
-            if (uri != null) {
+            if (uri != null)
+            {
                 text += $",URI=\"{uri}\"";
             }
-            
+
             await Append(text);
         }
 
@@ -156,6 +164,32 @@ namespace FastHls
             if (video != null)
             {
                 text += $",VIDEO=\"{video}\"";
+            }
+
+            await Append(text);
+        }
+
+        public async Task AddSessionData(
+            string dataId,
+            string value = null,
+            string uri = null,
+            string language = null)
+        {
+            var text = $"#EXT-X-SESSION-DATA:DATA-ID=\"{dataId}\"";
+
+            if (value != null)
+            {
+                text += $",VALUE=\"{value}\"";
+            }
+
+            if (uri != null)
+            {
+                text += $",URI=\"{uri}\"";
+            }
+
+            if (language != null)
+            {
+                text += $",LANGUAGE=\"{language}\"";
             }
 
             await Append(text);
