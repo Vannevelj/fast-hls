@@ -14,10 +14,10 @@ namespace FastHlsBenchmarks
         public async Task MediaManifest_WritingDataInternally()
         {
             var generator = new MediaManifestGenerator();
-            await generator.Start(PlaylistType.VOD, version: 8, targetDuration: 2.0);
+            generator.Start(PlaylistType.VOD, version: 8, targetDuration: 2.0);
             for (var i = 0; i < 1000; i++)
             {
-                await generator.AddMediaFile($"{i}.ts", duration: 2);
+                generator.AddMediaFile($"{i}.ts", duration: 2);
             }
             await generator.Finish();
         }
@@ -26,10 +26,10 @@ namespace FastHlsBenchmarks
         public async Task MediaManifest_WritingDataToMemoryOutputStream()
         {
             var generator = new MediaManifestGenerator();
-            await generator.Start(PlaylistType.VOD, version: 8, targetDuration: 2.0);
+            generator.Start(PlaylistType.VOD, version: 8, targetDuration: 2.0);
             for (var i = 0; i < 1000; i++)
             {
-                await generator.AddMediaFile($"{i}.ts", duration: 2);
+                generator.AddMediaFile($"{i}.ts", duration: 2);
             }
             await generator.Finish();
             await generator.WriteToStream(new MemoryStream());
@@ -39,10 +39,10 @@ namespace FastHlsBenchmarks
         public async Task MediaManifest_WritingDataToMemoryOutputStreamContinuously()
         {
             var generator = new MediaManifestGenerator(new MemoryStream(), continuousPersistence: true);
-            await generator.Start(PlaylistType.VOD, version: 8, targetDuration: 2.0);
+            generator.Start(PlaylistType.VOD, version: 8, targetDuration: 2.0);
             for (var i = 0; i < 1000; i++)
             {
-                await generator.AddMediaFile($"{i}.ts", duration: 2);
+                generator.AddMediaFile($"{i}.ts", duration: 2);
             }
             await generator.Finish();
         }
@@ -51,10 +51,10 @@ namespace FastHlsBenchmarks
         public async Task MasterManifest_WritingDataInternally()
         {
             var generator = new MasterManifestGenerator();
-            await generator.Start(version: 3);
+            generator.Start(version: 3);
             for (var i = 0; i < 1000; i++)
             {
-                await generator.AddMedia(
+                generator.AddMedia(
                     mediaType: MediaType.AUDIO,
                     groupId: "audio-hi",
                     name: "Dutch",
@@ -68,7 +68,7 @@ namespace FastHlsBenchmarks
                     characteristics: new string[] { "public.accessibility.describes-video" }
                 );
 
-                await generator.AddVariantStream(
+                generator.AddVariantStream(
                     uri: "high.m3u8",
                     bandwidth: 9_000_000,
                     averageBandwidth: 8_500_000,

@@ -15,53 +15,57 @@ namespace FastHlsTests
         [Fact]
         public async Task WritesHeader()
         {
-            await generator.Start(PlaylistType.VOD, version: 8, targetDuration: 10);
+            generator.Start(PlaylistType.VOD, version: 8, targetDuration: 10);
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:VOD
 #EXT-X-TARGETDURATION:10
 #EXT-X-VERSION:8
-#EXT-X-MEDIA-SEQUENCE:0\r\n");
+#EXT-X-MEDIA-SEQUENCE:0
+");
         }
 
         [Fact]
         public async Task WritesEvent()
         {
-            await generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
+            generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:EVENT
 #EXT-X-TARGETDURATION:10
 #EXT-X-VERSION:8
-#EXT-X-MEDIA-SEQUENCE:0\r\n");
+#EXT-X-MEDIA-SEQUENCE:0
+");
         }
 
         [Fact]
         public async Task WritesTargetDuration()
         {
-            await generator.Start(PlaylistType.VOD, version: 8, targetDuration: 50);
+            generator.Start(PlaylistType.VOD, version: 8, targetDuration: 50);
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:VOD
 #EXT-X-TARGETDURATION:50
 #EXT-X-VERSION:8
-#EXT-X-MEDIA-SEQUENCE:0\r\n");
+#EXT-X-MEDIA-SEQUENCE:0
+");
         }
 
         [Fact]
         public async Task WritesVersion()
         {
-            await generator.Start(PlaylistType.VOD, version: 4, targetDuration: 10);
+            generator.Start(PlaylistType.VOD, version: 4, targetDuration: 10);
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:VOD
 #EXT-X-TARGETDURATION:10
 #EXT-X-VERSION:4
-#EXT-X-MEDIA-SEQUENCE:0\r\n");
+#EXT-X-MEDIA-SEQUENCE:0
+");
         }
 
         [Fact]
         public async Task WritesMediaFiles()
         {
-            await generator.Start(PlaylistType.VOD, version: 8, targetDuration: 10);
-            await generator.AddMediaFile("http://example.com/movie1/fileSequenceA.ts", duration: 10);
-            await generator.AddMediaFile("http://example.com/movie1/fileSequenceB.ts", duration: 10);
+            generator.Start(PlaylistType.VOD, version: 8, targetDuration: 10);
+            generator.AddMediaFile("http://example.com/movie1/fileSequenceA.ts", duration: 10);
+            generator.AddMediaFile("http://example.com/movie1/fileSequenceB.ts", duration: 10);
 
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:VOD
@@ -71,15 +75,16 @@ namespace FastHlsTests
 #EXTINF:10.0,
 http://example.com/movie1/fileSequenceA.ts
 #EXTINF:10.0,
-http://example.com/movie1/fileSequenceB.ts\r\n");
+http://example.com/movie1/fileSequenceB.ts
+");
         }
 
         [Fact]
         public async Task WritesEndTag()
         {
-            await generator.Start(PlaylistType.VOD, version: 8, targetDuration: 10);
-            await generator.AddMediaFile("http://example.com/movie1/fileSequenceA.ts", duration: 10);
-            await generator.AddMediaFile("http://example.com/movie1/fileSequenceB.ts", duration: 10);
+            generator.Start(PlaylistType.VOD, version: 8, targetDuration: 10);
+            generator.AddMediaFile("http://example.com/movie1/fileSequenceA.ts", duration: 10);
+            generator.AddMediaFile("http://example.com/movie1/fileSequenceB.ts", duration: 10);
             await generator.Finish();
 
             await generator.AssertGeneratedContent(@"#EXTM3U
@@ -91,17 +96,18 @@ http://example.com/movie1/fileSequenceB.ts\r\n");
 http://example.com/movie1/fileSequenceA.ts
 #EXTINF:10.0,
 http://example.com/movie1/fileSequenceB.ts
-#EXT-X-ENDLIST\r\n");
+#EXT-X-ENDLIST
+");
         }
 
         [Fact]
         public async Task WritesDiscontinuity()
         {
-            await generator.Start(PlaylistType.VOD, version: 8, targetDuration: 10);
+            generator.Start(PlaylistType.VOD, version: 8, targetDuration: 10);
 
-            await generator.AddMediaFile("http://example.com/ads/ad1.ts", duration: 4);
-            await generator.InsertDiscontinuity();
-            await generator.AddMediaFile("http://example.com/movie1/fileSequenceB.ts", duration: 10);
+            generator.AddMediaFile("http://example.com/ads/ad1.ts", duration: 4);
+            generator.InsertDiscontinuity();
+            generator.AddMediaFile("http://example.com/movie1/fileSequenceB.ts", duration: 10);
             await generator.Finish();
 
             await generator.AssertGeneratedContent(@"#EXTM3U
@@ -114,14 +120,15 @@ http://example.com/ads/ad1.ts
 #EXT-X-DISCONTINUITY
 #EXTINF:10.0,
 http://example.com/movie1/fileSequenceB.ts
-#EXT-X-ENDLIST\r\n");
+#EXT-X-ENDLIST
+");
         }
 
         [Fact]
         public async Task WritesDiscontinuitySequence()
         {
-            await generator.Start(PlaylistType.VOD, version: 8, targetDuration: 10, discontinuitySequence: 4);
-            await generator.AddMediaFile("http://example.com/ads/ad1.ts", duration: 4);
+            generator.Start(PlaylistType.VOD, version: 8, targetDuration: 10, discontinuitySequence: 4);
+            generator.AddMediaFile("http://example.com/ads/ad1.ts", duration: 4);
             await generator.Finish();
 
             await generator.AssertGeneratedContent(@"#EXTM3U
@@ -132,94 +139,98 @@ http://example.com/movie1/fileSequenceB.ts
 #EXT-X-DISCONTINUITY-SEQUENCE:4
 #EXTINF:4.0,
 http://example.com/ads/ad1.ts
-#EXT-X-DISCONTINUITY
-#EXTINF:10.0,
-http://example.com/movie1/fileSequenceB.ts
-#EXT-X-ENDLIST\r\n");
+#EXT-X-ENDLIST
+");
         }
 
         [Fact]
         public async Task WritesEncryption()
         {
-            await generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
-            await generator.AddEncryption(Encryption.AES128, "https://example.org/enc", iv: "123ABC", keyformat: "abc", keyformatVersions: new int[] { 1, 2 });
+            generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
+            generator.AddEncryption(Encryption.AES128, "https://example.org/enc", iv: "123ABC", keyformat: "abc", keyformatVersions: new int[] { 1, 2 });
 
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:EVENT
 #EXT-X-TARGETDURATION:10
 #EXT-X-VERSION:8
 #EXT-X-MEDIA-SEQUENCE:0
-#EXT-X-KEY:METHOD=AES-128,URI=""https://example.org/enc"",IV=""123ABC"",KEYFORMAT=""abc"",KEYFORMATVERSIONS=""1/2""");
+#EXT-X-KEY:METHOD=AES-128,URI=""https://example.org/enc"",IV=""123ABC"",KEYFORMAT=""abc"",KEYFORMATVERSIONS=""1/2""
+");
         }
 
         [Fact]
         public async Task WritesStartTag()
         {
-            await generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
-            await generator.AddStartTag(-10.0, isPrecise: true);
+            generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
+            generator.AddStartTag(-10.5, isPrecise: true);
 
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:EVENT
 #EXT-X-TARGETDURATION:10
 #EXT-X-VERSION:8
 #EXT-X-MEDIA-SEQUENCE:0
-#EXT-X-START:TIME-OFFSET-10.0,PRECISE=YES");
+#EXT-X-START:TIME-OFFSET=-10.5,PRECISE=YES
+");
         }
 
         [Fact]
         public async Task WritesByteRange()
         {
-            await generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
-            await generator.AddByteRange(length: 9_876_543, offset: 321);
+            generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
+            generator.AddByteRange(length: 9_876_543, offset: 321);
 
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:EVENT
 #EXT-X-TARGETDURATION:10
 #EXT-X-VERSION:8
 #EXT-X-MEDIA-SEQUENCE:0
-#EXT-X-BYTERANGE:9876543@321");
+#EXT-X-BYTERANGE:9876543@321
+");
         }
 
         [Fact]
         public async Task WritesByteRange_NoOffset()
         {
-            await generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
-            await generator.AddByteRange(length: 9_876_543);
+            generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
+            generator.AddByteRange(length: 9_876_543);
 
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:EVENT
 #EXT-X-TARGETDURATION:10
 #EXT-X-VERSION:8
 #EXT-X-MEDIA-SEQUENCE:0
-#EXT-X-BYTERANGE:9876543");
+#EXT-X-BYTERANGE:9876543
+");
         }
 
         [Fact]
         public async Task WritesMap()
         {
-            await generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
-            await generator.AddMap(uri: "main.mp4", length: 9_876_543, offset: 123);
+            generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
+            generator.AddMap(uri: "main.mp4", length: 9_876_543, offset: 123);
 
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:EVENT
 #EXT-X-TARGETDURATION:10
 #EXT-X-VERSION:8
 #EXT-X-MEDIA-SEQUENCE:0
-#EXT-X-MAP:URI=""main.mp4"",BYTERANGE=""9876543@123""");
+#EXT-X-MAP:URI=""main.mp4"",BYTERANGE=""9876543@123""
+");
         }
 
         [Fact]
         public async Task WritesMap_NoOffset()
         {
-            await generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
-            await generator.AddMap(uri: "main.mp4", length: 9_876_543);
+            generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
+            generator.AddMap(uri: "main.mp4", length: 9_876_543);
 
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:EVENT
 #EXT-X-TARGETDURATION:10
 #EXT-X-VERSION:8
 #EXT-X-MEDIA-SEQUENCE:0
-#EXT-X-MAP:URI=""main.mp4"",BYTERANGE=""9876543""");
+#EXT-X-MAP:URI=""main.mp4"",BYTERANGE=""9876543""
+");
         }
     }
 }

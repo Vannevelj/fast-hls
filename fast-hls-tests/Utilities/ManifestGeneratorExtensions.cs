@@ -9,6 +9,7 @@ namespace FastHlsTests
     {
         public static async Task AssertGeneratedContent(this AbstractManifestGenerator generator, string content)
         {
+            content = content.Replace("\r\n", "\n").Replace("\n", "\r\n");
             var outputStream = new MemoryStream();
             await generator.WriteToStream(outputStream);
             outputStream.Position = 0;

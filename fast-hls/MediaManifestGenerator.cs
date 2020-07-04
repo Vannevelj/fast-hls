@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using FastHls.Abstractions;
+using FastHls.Extensions;
 using FastHls.Models;
 
 namespace FastHls
@@ -13,93 +14,113 @@ namespace FastHls
 
         public MediaManifestGenerator(Stream output, bool continuousPersistence) : base(output, continuousPersistence) {}
 
-        public async Task Start(PlaylistType playlistType, int version, double targetDuration, int? discontinuitySequence = null)
+        public void Start(PlaylistType playlistType, int version, double targetDuration, int? discontinuitySequence = null)
         {
-            var text = $@"#EXTM3U
-#EXT-X-PLAYLIST-TYPE:{playlistType}
-#EXT-X-TARGETDURATION:{targetDuration}
-#EXT-X-VERSION:{version}
-#EXT-X-MEDIA-SEQUENCE:0\r\n";
+            AppendLine($"#EXTM3U");
+            AppendLine($"#EXT-X-PLAYLIST-TYPE:{playlistType}");
+            AppendLine($"#EXT-X-TARGETDURATION:{targetDuration}");
+            AppendLine($"#EXT-X-VERSION:{version}");
+            AppendLine($"#EXT-X-MEDIA-SEQUENCE:0");
 
-            if (discontinuitySequence.HasValue) {
-                text += $"#EXT-X-DISCONTINUITY-SEQUENCE:{discontinuitySequence.Value}\r\n";
+            if (discontinuitySequence.HasValue)
+            {
+                AppendLine($"#EXT-X-DISCONTINUITY-SEQUENCE:{discontinuitySequence.Value}");
             }
-
-            await Append(text);
         }
 
-        public async Task AddStartTag(double offsetInSeconds, bool isPrecise = false) {
-            var text = $"#EXT-X-START:TIME-OFFSET={offsetInSeconds}";
-
-            if (isPrecise) {
-                text += ",PRECISE=YES";
-            }
-
-            await Append(text);
-        }
-
-        public async Task AddEncryption(Encryption encryption, string uri = null, string iv = null, string keyformat = null, int[] keyformatVersions = null) {
-            var text = $"#EXT-X-KEY:METHOD={encryption}";
-
-            if (uri != null) {
-                text += $",URI=\"{uri}\"";
-            }
-
-            if (iv != null) {
-                text += $",IV=\"{iv}\"";
-            }
-
-            if (keyformat != null) {
-                text += $",KEYFORMAT=\"{keyformat}\"";
-            }
-
-            if (keyformatVersions != null) {
-                text += $",KEYFORMATVERSIONS=\"{string.Join("/", keyformatVersions)}\"";
-            }
-
-            await Append(text);
-        }
-
-        public async Task AddMediaFile(string path, double duration)
+        public void AddStartTag(double offsetInSeconds, bool isPrecise = false)
         {
-            var text = $@"#EXTINF:{duration:F1},\r\n{path}\r\n";
+            var builder = _stringBuilderPool.Get();
+            builder.Append($"#EXT-X-START:TIME-OFFSET={offsetInSeconds}");
 
-            await Append(text);
-        }
-
-        public async Task InsertDiscontinuity() {
-            var text = "#EXT-X-DISCONTINUITY\r\n";
-            await Append(text);
-        }
-
-        public async Task AddByteRange(int length, int? offset = null) {
-            var text = $"#EXT-X-BYTERANGE:{length}";
-
-            if(offset.HasValue) {
-                text += $"@{offset}";
+            if (isPrecise)
+            {
+                builder.Append(",PRECISE=YES");
             }
 
-            await Append(text);
+            builder.AppendNormalizedNewline();
+
+            Append(builder.ToString());
         }
 
-        public async Task AddMap(string uri, int? length = null, int? offset = null) {
-            var text = $"#EXT-X-MAP:URI=\"{uri}\"";
+        public void AddEncryption(Encryption encryption, string uri = null, string iv = null, string keyformat = null, int[] keyformatVersions = null)
+        {
+            var builder = _stringBuilderPool.Get();
+            builder.Append($"#EXT-X-KEY:METHOD={encryption}");
 
-            if(length.HasValue && !offset.HasValue) {
-                text += $",BYTERANGE=\"{length}\"";
+            if (uri != null)
+            {
+                builder.Append($",URI=\"{uri}\"");
             }
 
-            if(length.HasValue && offset.HasValue) {
-                text += $",BYTERANGE=\"{length}@{offset}\"";
+            if (iv != null)
+            {
+                builder.Append($",IV=\"{iv}\"");
             }
 
-            await Append(text);
+            if (keyformat != null)
+            {
+                builder.Append($",KEYFORMAT=\"{keyformat}\"");
+            }
+
+            if (keyformatVersions != null)
+            {
+                builder.Append($",KEYFORMATVERSIONS=\"{string.Join("/", keyformatVersions)}\"");
+            }
+
+            builder.AppendNormalizedNewline();
+
+            Append(builder.ToString());
+        }
+
+        public void AddMediaFile(string path, double duration)
+        {
+            AppendLine($"#EXTINF:{duration:F1},");
+            AppendLine(path);
+        }
+
+        public void InsertDiscontinuity()
+        {
+            AppendLine("#EXT-X-DISCONTINUITY");
+        }
+
+        public void AddByteRange(int length, int? offset = null)
+        {
+            var builder = _stringBuilderPool.Get();
+            builder.Append($"#EXT-X-BYTERANGE:{length}");
+
+            if (offset.HasValue)
+            {
+                builder.Append($"@{offset}");
+            }
+
+            builder.AppendNormalizedNewline();
+
+            Append(builder.ToString());
+        }
+
+        public void AddMap(string uri, int? length = null, int? offset = null)
+        {
+            var builder = _stringBuilderPool.Get();
+            builder.Append($"#EXT-X-MAP:URI=\"{uri}\"");
+
+            if (length.HasValue && !offset.HasValue)
+            {
+                builder.Append($",BYTERANGE=\"{length}\"");
+            }
+
+            if (length.HasValue && offset.HasValue)
+            {
+                builder.Append($",BYTERANGE=\"{length}@{offset}\"");
+            }
+
+            builder.AppendNormalizedNewline();
+            Append(builder.ToString());
         }
 
         public override async Task Finish() 
         {
-            var text = "#EXT-X-ENDLIST\r\n";
-            await Append(text);
+            AppendLine("#EXT-X-ENDLIST");
 
             await base.Finish();
         }

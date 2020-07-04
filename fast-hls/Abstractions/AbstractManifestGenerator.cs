@@ -1,12 +1,17 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using FastHls.Extensions;
+using Microsoft.Extensions.ObjectPool;
 
 namespace FastHls.Abstractions
 {
     public abstract class AbstractManifestGenerator
     {
-        private readonly StringBuilder _playlist = new StringBuilder();
+        private readonly DefaultObjectPoolProvider _objectPoolProvider;
+        protected readonly ObjectPool<StringBuilder> _stringBuilderPool;
+
+        private readonly StringBuilder _playlist;
         private readonly bool _continuousPersistence;
         private readonly Stream _output;
 
@@ -16,11 +21,19 @@ namespace FastHls.Abstractions
         {
             _output = output;
             _continuousPersistence = continuousPersistence;
+
+            _objectPoolProvider = new DefaultObjectPoolProvider();
+            _stringBuilderPool = _objectPoolProvider.CreateStringBuilderPool();
+            _playlist = _stringBuilderPool.Get();
         }
 
-        protected async Task Append(string text) {
+        protected void Append(string text) {
             _playlist.Append(text);
-            await WriteContinuously(text);
+            // await WriteContinuously(text);
+        }
+
+        protected void AppendLine(string text) {
+            _playlist.AppendNormalizedline(text);
         }
 
         public async ValueTask WriteToStream(Stream output)

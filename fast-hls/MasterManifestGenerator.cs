@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using FastHls.Abstractions;
+using FastHls.Extensions;
 using FastHls.Models;
 
 namespace FastHls
@@ -13,20 +14,18 @@ namespace FastHls
 
         public MasterManifestGenerator(Stream output, bool continuousPersistence) : base(output, continuousPersistence) { }
 
-        public async Task Start(int version, bool independentSegments = true)
+        public void Start(int version, bool independentSegments = true)
         {
-            var text = $@"#EXTM3U
-#EXT-X-VERSION:{version}\r\n";
+            AppendLine("#EXTM3U");
+            AppendLine($"#EXT-X-VERSION:{version}");
 
             if (independentSegments)
             {
-                text += $"#EXT-X-INDEPENDENT-SEGMENTS\r\n";
+                AppendLine($"#EXT-X-INDEPENDENT-SEGMENTS");
             }
-
-            await Append(text);
         }
 
-        public async Task AddMedia(
+        public void AddMedia(
             MediaType mediaType,
             string groupId,
             string name,
@@ -39,52 +38,56 @@ namespace FastHls
             string instreamId = null,
             string[] characteristics = null) // TODO: turn characteristics this into an enum
         {
-            var text = $"#EXT-X-MEDIA:TYPE={mediaType},GROUP-ID=\"{groupId}\",NAME=\"{name}\"";
+            var builder = _stringBuilderPool.Get();
+
+            builder.Append($"#EXT-X-MEDIA:TYPE={mediaType},GROUP-ID=\"{groupId}\",NAME=\"{name}\"");
 
             if (language != null)
             {
-                text += $",LANGUAGE=\"{language}\"";
+                builder.Append($",LANGUAGE=\"{language}\"");
             }
 
             if (assocLanguage != null)
             {
-                text += $",ASSOC-LANGUAGE=\"{assocLanguage}\"";
+                builder.Append($",ASSOC-LANGUAGE=\"{assocLanguage}\"");
             }
 
             if (isDefault)
             {
-                text += ",DEFAULT=YES";
+                builder.Append(",DEFAULT=YES");
             }
 
             if (autoselect)
             {
-                text += ",AUTOSELECT=YES";
+                builder.Append(",AUTOSELECT=YES");
             }
 
             if (forced)
             {
-                text += ",FORCED=YES";
+                builder.Append(",FORCED=YES");
             }
 
             if (instreamId != null)
             {
-                text += $",INSTREAM-ID=\"{instreamId}\"";
+                builder.Append($",INSTREAM-ID=\"{instreamId}\"");
             }
 
             if (characteristics != null)
             {
-                text += $",CHARACTERISTICS=\"{string.Join(",", characteristics)}\"";
+                builder.Append($",CHARACTERISTICS=\"{string.Join(",", characteristics)}\"");
             }
 
             if (uri != null)
             {
-                text += $",URI=\"{uri}\"";
+                builder.Append($",URI=\"{uri}\"");
             }
 
-            await Append(text);
+            builder.AppendNormalizedNewline();
+
+            Append(builder.ToString());
         }
 
-        public async Task AddVariantStream(
+        public void AddVariantStream(
             string uri,
             int bandwidth,
             int? averageBandwidth = null,
@@ -95,48 +98,51 @@ namespace FastHls
             string subtitles = null,
             string closedCaptions = null)
         {
-            var text = $"#EXT-X-STREAM-INF:BANDWIDTH={bandwidth}";
+            var builder = _stringBuilderPool.Get();
+
+            builder.Append($"#EXT-X-STREAM-INF:BANDWIDTH={bandwidth}");
 
             if (averageBandwidth.HasValue)
             {
-                text += $",AVERAGE-BANDWIDTH={averageBandwidth.Value}";
+                builder.Append($",AVERAGE-BANDWIDTH={averageBandwidth.Value}");
             }
 
             if (codecs != null)
             {
-                text += $",CODECS=\"{string.Join(",", codecs)}\"";
+                builder.Append($",CODECS=\"{string.Join(",", codecs)}\"");
             }
 
             if (resolution.HasValue)
             {
-                text += $",RESOLUTION={resolution.Value.Width}x{resolution.Value.Height}";
+                builder.Append($",RESOLUTION={resolution.Value.Width}x{resolution.Value.Height}");
             }
 
             if (audio != null)
             {
-                text += $",AUDIO=\"{audio}\"";
+                builder.Append($",AUDIO=\"{audio}\"");
             }
 
             if (video != null)
             {
-                text += $",VIDEO=\"{video}\"";
+                builder.Append($",VIDEO=\"{video}\"");
             }
 
             if (subtitles != null)
             {
-                text += $",SUBTITLES=\"{subtitles}\"";
+                builder.Append($",SUBTITLES=\"{subtitles}\"");
             }
 
             if (closedCaptions != null)
             {
-                text += $",CLOSED-CAPTIONS=\"{closedCaptions}\"";
+                builder.Append($",CLOSED-CAPTIONS=\"{closedCaptions}\"");
             }
 
-            text += $"\r\n{uri}\r\n";
-            await Append(text);
+            builder.AppendNormalizedNewline();
+            builder.AppendNormalizedline(uri);
+            Append(builder.ToString());
         }
 
-        public async Task AddIFrameVariantStream(
+        public void AddIFrameVariantStream(
             string uri,
             int bandwidth,
             int? averageBandwidth = null,
@@ -144,55 +150,61 @@ namespace FastHls
             Resolution? resolution = null,
             string video = null)
         {
-            var text = $"#EXT-X-I-FRAME-STREAM-INF:BANDWIDTH={bandwidth},URI=\"{uri}\"";
+            var builder = _stringBuilderPool.Get();
+
+            builder.Append($"#EXT-X-I-FRAME-STREAM-INF:BANDWIDTH={bandwidth},URI=\"{uri}\"");
 
             if (averageBandwidth.HasValue)
             {
-                text += $",AVERAGE-BANDWIDTH={averageBandwidth.Value}";
+                builder.Append($",AVERAGE-BANDWIDTH={averageBandwidth.Value}");
             }
 
             if (codecs != null)
             {
-                text += $",CODECS=\"{string.Join(",", codecs)}\"";
+                builder.Append($",CODECS=\"{string.Join(",", codecs)}\"");
             }
 
             if (resolution.HasValue)
             {
-                text += $",RESOLUTION={resolution.Value.Width}x{resolution.Value.Height}";
+                builder.Append($",RESOLUTION={resolution.Value.Width}x{resolution.Value.Height}");
             }
 
             if (video != null)
             {
-                text += $",VIDEO=\"{video}\"";
+                builder.Append($",VIDEO=\"{video}\"");
             }
 
-            await Append(text);
+            builder.AppendNormalizedNewline();
+
+            Append(builder.ToString());
         }
 
-        public async Task AddSessionData(
+        public void AddSessionData(
             string dataId,
             string value = null,
             string uri = null,
             string language = null)
         {
-            var text = $"#EXT-X-SESSION-DATA:DATA-ID=\"{dataId}\"";
+            var builder = _stringBuilderPool.Get();
+            builder.Append($"#EXT-X-SESSION-DATA:DATA-ID=\"{dataId}\"");
 
             if (value != null)
             {
-                text += $",VALUE=\"{value}\"";
+                builder.Append($",VALUE=\"{value}\"");
             }
 
             if (uri != null)
             {
-                text += $",URI=\"{uri}\"";
+                builder.Append($",URI=\"{uri}\"");
             }
 
             if (language != null)
             {
-                text += $",LANGUAGE=\"{language}\"";
+                builder.Append($",LANGUAGE=\"{language}\"");
             }
 
-            await Append(text);
+            builder.AppendNormalizedNewline();
+            Append(builder.ToString());
         }
     }
 }
