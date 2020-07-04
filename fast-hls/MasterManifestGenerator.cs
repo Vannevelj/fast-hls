@@ -127,5 +127,38 @@ namespace FastHls
             text += $"\r\n{uri}\r\n";
             await Append(text);
         }
+
+        public async Task AddIFrameVariantStream(
+            string uri,
+            int bandwidth,
+            int? averageBandwidth = null,
+            string[] codecs = null,
+            Resolution? resolution = null,
+            string video = null)
+        {
+            var text = $"#EXT-X-I-FRAME-STREAM-INF:BANDWIDTH={bandwidth},URI=\"{uri}\"";
+
+            if (averageBandwidth.HasValue)
+            {
+                text += $",AVERAGE-BANDWIDTH={averageBandwidth.Value}";
+            }
+
+            if (codecs != null)
+            {
+                text += $",CODECS=\"{string.Join(",", codecs)}\"";
+            }
+
+            if (resolution.HasValue)
+            {
+                text += $",RESOLUTION={resolution.Value.Width}x{resolution.Value.Height}";
+            }
+
+            if (video != null)
+            {
+                text += $",VIDEO=\"{video}\"";
+            }
+
+            await Append(text);
+        }
     }
 }

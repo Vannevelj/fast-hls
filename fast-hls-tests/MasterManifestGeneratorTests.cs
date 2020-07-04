@@ -88,5 +88,24 @@ namespace FastHlsTests
 #EXT-X-INDEPENDENT-SEGMENTS
 #EXT-X-STREAM-INF:BANDWIDTH=9000000,AVERAGE-BANDWIDTH=8500000,CODECS=""avc1.640029,mp4a.40.2"",RESOLUTION=1024x720,AUDIO=""audio-hi"",VIDEO=""video-hi"",SUBTITLES=""subtitles-en"",CLOSED-CAPTIONS=""cc-en""");
         }
+
+        [Fact]
+        public async Task WritesIFrameVariantStream()
+        {
+            await generator.Start(version: 3);
+            await generator.AddIFrameVariantStream(
+                uri: "high.m3u8",
+                bandwidth: 9_000_000,
+                averageBandwidth: 8_500_000,
+                codecs: new [] { "avc1.640029", "mp4a.40.2" },
+                resolution: new Resolution(720, 1024),
+                video: "video-hi"
+            );
+
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-INDEPENDENT-SEGMENTS
+#EXT-X-I-FRAME-STREAM-INF:BANDWIDTH=9000000,URI=""high.m3u8"",AVERAGE-BANDWIDTH=8500000,CODECS=""avc1.640029,mp4a.40.2"",RESOLUTION=1024x720,VIDEO=""video-hi""");
+        }
     }
 }
