@@ -165,5 +165,33 @@ http://example.com/movie1/fileSequenceB.ts
 #EXT-X-MEDIA-SEQUENCE:0
 #EXT-X-START:TIME-OFFSET-10.0,PRECISE=YES");
         }
+
+        [Fact]
+        public async Task WritesByteRange()
+        {
+            await generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
+            await generator.AddByteRange(length: 9_876_543, offset: 321);
+
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-PLAYLIST-TYPE:EVENT
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:8
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-BYTERANGE:9876543@321");
+        }
+
+        [Fact]
+        public async Task WritesByteRange_NoOffset()
+        {
+            await generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
+            await generator.AddByteRange(length: 9_876_543);
+
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-PLAYLIST-TYPE:EVENT
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:8
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-BYTERANGE:9876543");
+        }
     }
 }

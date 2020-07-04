@@ -72,6 +72,16 @@ namespace FastHls
             await Append(text);
         }
 
+        public async Task AddByteRange(int length, int? offset = null) {
+            var text = $"#EXT-X-BYTERANGE:{length}";
+
+            if(offset.HasValue) {
+                text += $"@{offset}";
+            }
+
+            await Append(text);
+        }
+
         public override async Task Finish() 
         {
             var text = "#EXT-X-ENDLIST\r\n";
