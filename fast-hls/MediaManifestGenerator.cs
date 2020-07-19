@@ -14,11 +14,12 @@ namespace FastHls
 
         public MediaManifestGenerator(Stream output, bool continuousPersistence) : base(output, continuousPersistence) {}
 
-        public void Start(PlaylistType playlistType, int version, double targetDuration, int? discontinuitySequence = null, ServerControl? serverControl = null)
+        public void Start(PlaylistType playlistType, int version, double targetDuration, int? discontinuitySequence = null, ServerControl? serverControl = null, double? partDuration = null)
         {
             AppendLine($"#EXTM3U");
             AppendLine($"#EXT-X-PLAYLIST-TYPE:{playlistType}");
-            if (serverControl.HasValue) {
+            if (serverControl.HasValue) 
+            {
                 AppendLine(serverControl.Value.ToString());
             }
             AppendLine($"#EXT-X-TARGETDURATION:{targetDuration}");
@@ -28,6 +29,11 @@ namespace FastHls
             if (discontinuitySequence.HasValue)
             {
                 AppendLine($"#EXT-X-DISCONTINUITY-SEQUENCE:{discontinuitySequence.Value}");
+            }
+
+            if (partDuration.HasValue) 
+            {
+                AppendLine($"#EXT-X-PART-INF:PART-TARGET={partDuration.Value}");
             }
         }
 
@@ -82,39 +88,49 @@ namespace FastHls
             AppendLine(path);
         }
 
+        public void AddPartialFile(string path, double duration, bool isIndependent = false, ByteRange? byteRange = null, bool hasGap = false) 
+        {
+            var builder = _stringBuilderPool.Get();
+            builder.Append($"#EXT-X-PART:DURATION={duration},URI=\"{path}\"");
+
+            if (isIndependent) {
+                builder.Append($",INDEPENDENT={(isIndependent ? "YES" : "NO")}");
+            }
+
+            if (byteRange.HasValue) {
+                builder.Append($",BYTERANGE={byteRange.Value}");
+            }
+
+            if (hasGap) {
+                builder.Append($",GAP={(hasGap ? "YES" : "NO")}");
+            }
+
+            builder.AppendNormalizedNewline();
+            Append(builder.ToString());
+        }
+
         public void InsertDiscontinuity()
         {
             AppendLine("#EXT-X-DISCONTINUITY");
         }
 
-        public void AddByteRange(int length, int? offset = null)
+        public void AddByteRange(ByteRange byteRange)
         {
             var builder = _stringBuilderPool.Get();
-            builder.Append($"#EXT-X-BYTERANGE:{length}");
-
-            if (offset.HasValue)
-            {
-                builder.Append($"@{offset}");
-            }
+            builder.Append($"#EXT-X-BYTERANGE:{byteRange}");
 
             builder.AppendNormalizedNewline();
 
             Append(builder.ToString());
         }
 
-        public void AddMap(string uri, int? length = null, int? offset = null)
+        public void AddMap(string uri, ByteRange? byteRange = null)
         {
             var builder = _stringBuilderPool.Get();
             builder.Append($"#EXT-X-MAP:URI=\"{uri}\"");
 
-            if (length.HasValue && !offset.HasValue)
-            {
-                builder.Append($",BYTERANGE=\"{length}\"");
-            }
-
-            if (length.HasValue && offset.HasValue)
-            {
-                builder.Append($",BYTERANGE=\"{length}@{offset}\"");
+            if (byteRange.HasValue) {
+                builder.Append($",BYTERANGE=\"{byteRange.Value}\"");
             }
 
             builder.AppendNormalizedNewline();

@@ -177,7 +177,7 @@ http://example.com/ads/ad1.ts
         public async Task WritesByteRange()
         {
             generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
-            generator.AddByteRange(length: 9_876_543, offset: 321);
+            generator.AddByteRange(new ByteRange(length: 9_876_543, offset: 321));
 
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:EVENT
@@ -192,7 +192,7 @@ http://example.com/ads/ad1.ts
         public async Task WritesByteRange_NoOffset()
         {
             generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
-            generator.AddByteRange(length: 9_876_543);
+            generator.AddByteRange(new ByteRange(length: 9_876_543));
 
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:EVENT
@@ -207,7 +207,7 @@ http://example.com/ads/ad1.ts
         public async Task WritesMap()
         {
             generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
-            generator.AddMap(uri: "main.mp4", length: 9_876_543, offset: 123);
+            generator.AddMap(uri: "main.mp4", new ByteRange(length: 9_876_543, offset: 123));
 
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:EVENT
@@ -222,7 +222,7 @@ http://example.com/ads/ad1.ts
         public async Task WritesMap_NoOffset()
         {
             generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
-            generator.AddMap(uri: "main.mp4", length: 9_876_543);
+            generator.AddMap(uri: "main.mp4", new ByteRange(length: 9_876_543));
 
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:EVENT
@@ -251,6 +251,24 @@ http://example.com/ads/ad1.ts
 #EXT-X-TARGETDURATION:10
 #EXT-X-VERSION:8
 #EXT-X-MEDIA-SEQUENCE:0
+");
+        }
+
+        [Fact]
+        public async Task WritesPartialMediaFiles()
+        {
+            generator.Start(PlaylistType.VOD, version: 8, targetDuration: 10, partDuration: 2);
+            generator.AddPartialFile("http://example.com/movie1/fileSequenceA.ts", duration: 2);
+            generator.AddPartialFile("http://example.com/movie1/fileSequenceB.ts", duration: 2, isIndependent: true);
+
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-PLAYLIST-TYPE:VOD
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:8
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-PART-INF:PART-TARGET=2
+#EXT-X-PART:DURATION=2,URI=""http://example.com/movie1/fileSequenceA.ts""
+#EXT-X-PART:DURATION=2,URI=""http://example.com/movie1/fileSequenceB.ts"",INDEPENDENT=YES
 ");
         }
     }
