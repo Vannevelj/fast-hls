@@ -67,7 +67,7 @@ namespace FastHlsTests
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-VERSION:3
 #EXT-X-INDEPENDENT-SEGMENTS
-#EXT-X-MEDIA:TYPE=CLOSED-CAPTIONS,GROUP-ID=""audio-hi"",NAME=""Dutch""
+#EXT-X-MEDIA:TYPE=CLOSED-CAPTIONS,GROUP-ID=""audio-hi"",NAME=""Dutch"",URI=""dutch.m3u8""
 ");
         }
 

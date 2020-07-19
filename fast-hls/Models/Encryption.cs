@@ -1,9 +1,15 @@
 namespace FastHls.Models
 {
-    public enum Encryption
+    public class Encryption
     {
-        NONE = 0,
-        AES128 = 1,
-        SAMPLEAES = 2
+        private readonly string value;
+
+        private Encryption(string value) => this.value = value;
+
+        public static readonly Encryption AES128 = "AES-128";
+        public static readonly Encryption SAMPLEAES = "SAMPLE=AES";
+
+        public static implicit operator Encryption(string s) => new Encryption(s);
+        public override string ToString() => value;
     }
 }
