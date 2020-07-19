@@ -232,5 +232,26 @@ http://example.com/ads/ad1.ts
 #EXT-X-MAP:URI=""main.mp4"",BYTERANGE=""9876543""
 ");
         }
+
+        [Fact]
+        public async Task WritesServerControl()
+        {
+            var serverControl = new ServerControl {
+                CanBlockReload = true,
+                CanSkipUntil = 3,
+                HoldBack = 2,
+                PartHoldBack = 1
+            };
+
+            generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10, serverControl: serverControl);
+
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-PLAYLIST-TYPE:EVENT
+#EXT-X-SERVER-CONTROL:CAN-BLOCK-RELOAD=YES,CAN-SKIP-UNTIL=3,HOLD-BACK=2,PART-HOLD-BACK=1
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:8
+#EXT-X-MEDIA-SEQUENCE:0
+");
+        }
     }
 }

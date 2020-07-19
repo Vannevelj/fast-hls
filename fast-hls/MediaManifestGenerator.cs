@@ -14,10 +14,13 @@ namespace FastHls
 
         public MediaManifestGenerator(Stream output, bool continuousPersistence) : base(output, continuousPersistence) {}
 
-        public void Start(PlaylistType playlistType, int version, double targetDuration, int? discontinuitySequence = null)
+        public void Start(PlaylistType playlistType, int version, double targetDuration, int? discontinuitySequence = null, ServerControl? serverControl = null)
         {
             AppendLine($"#EXTM3U");
             AppendLine($"#EXT-X-PLAYLIST-TYPE:{playlistType}");
+            if (serverControl.HasValue) {
+                AppendLine(serverControl.Value.ToString());
+            }
             AppendLine($"#EXT-X-TARGETDURATION:{targetDuration}");
             AppendLine($"#EXT-X-VERSION:{version}");
             AppendLine($"#EXT-X-MEDIA-SEQUENCE:0");
