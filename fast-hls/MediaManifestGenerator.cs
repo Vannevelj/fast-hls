@@ -137,6 +137,23 @@ namespace FastHls
             Append(builder.ToString());
         }
 
+        public void AddPreloadHint(HintType type, string path, int? start = null, int? length = null)
+        {
+            var builder = _stringBuilderPool.Get();
+            builder.Append($"#EXT-X-PRELOAD-HINT:TYPE={type},URI=\"{path}\"");
+
+            if (start.HasValue) {
+                builder.Append($",BYTERANGE-START=\"{start.Value}\"");
+            }
+
+            if (length.HasValue) {
+                builder.Append($",BYTERANGE-LENGTH=\"{length.Value}\"");
+            }
+
+            builder.AppendNormalizedNewline();
+            Append(builder.ToString());
+        }
+
         public override async Task Finish() 
         {
             AppendLine("#EXT-X-ENDLIST");

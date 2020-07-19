@@ -271,5 +271,23 @@ http://example.com/ads/ad1.ts
 #EXT-X-PART:DURATION=2,URI=""http://example.com/movie1/fileSequenceB.ts"",INDEPENDENT=YES
 ");
         }
+
+        [Fact]
+        public async Task WritesPreloadHints()
+        {
+            generator.Start(PlaylistType.VOD, version: 8, targetDuration: 10, partDuration: 2);
+            generator.AddPartialFile("http://example.com/movie1/fileSequenceA.ts", duration: 2);
+            generator.AddPreloadHint(HintType.PART, "http://example.com/movie1/fileSequenceB.ts");
+
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-PLAYLIST-TYPE:VOD
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:8
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-PART-INF:PART-TARGET=2
+#EXT-X-PART:DURATION=2,URI=""http://example.com/movie1/fileSequenceA.ts""
+#EXT-X-PRELOAD-HINT:TYPE=PART,URI=""http://example.com/movie1/fileSequenceB.ts""
+");
+        }
     }
 }
