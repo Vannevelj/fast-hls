@@ -289,5 +289,23 @@ http://example.com/ads/ad1.ts
 #EXT-X-PRELOAD-HINT:TYPE=PART,URI=""http://example.com/movie1/fileSequenceB.ts""
 ");
         }
+
+        [Fact]
+        public async Task WritesRenditionReport()
+        {
+            generator.Start(PlaylistType.VOD, version: 8, targetDuration: 10, partDuration: 2);
+            generator.AddRenditionReport("../1M/waitForMSN.php", lastMsn: 273);
+            generator.AddRenditionReport("../2M/waitForMSN.php", lastMsn: 273, lastPart: 1);
+
+            await generator.AssertGeneratedContent(@"#EXTM3U
+#EXT-X-PLAYLIST-TYPE:VOD
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:8
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-PART-INF:PART-TARGET=2
+#EXT-X-RENDITION-REPORT:URI=""../1M/waitForMSN.php"",LAST-MSN=273
+#EXT-X-RENDITION-REPORT:URI=""../2M/waitForMSN.php"",LAST-MSN=273,LAST-PART=1
+");
+        }
     }
 }

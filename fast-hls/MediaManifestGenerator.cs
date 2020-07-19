@@ -154,6 +154,19 @@ namespace FastHls
             Append(builder.ToString());
         }
 
+        public void AddRenditionReport(string path, int lastMsn, int? lastPart = null)
+        {
+            var builder = _stringBuilderPool.Get();
+            builder.Append($"#EXT-X-RENDITION-REPORT:URI=\"{path}\",LAST-MSN={lastMsn}");
+
+            if (lastPart.HasValue) {
+                builder.Append($",LAST-PART={lastPart.Value}");
+            }
+
+            builder.AppendNormalizedNewline();
+            Append(builder.ToString());
+        }
+
         public override async Task Finish() 
         {
             AppendLine("#EXT-X-ENDLIST");
