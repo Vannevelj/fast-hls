@@ -12,9 +12,9 @@ namespace FastHls.Models.Manifests
         public List<IFrameVariantStream> IFrameVariantStreams { get; set; }
         public List<SessionData> SessionData { get; set; }
 
-        private void Render()
+        public void Render()
         {
-            AppendLine("#EXTM3U");
+            AppendLine($"#EXTM3U");
             AppendLine($"#EXT-X-VERSION:{Version}");
 
             if (HasIndependentSegments)

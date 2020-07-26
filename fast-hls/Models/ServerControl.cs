@@ -1,18 +1,18 @@
-using Microsoft.Extensions.ObjectPool;
+using System.Text;
+using FastHls.Models.Interfaces;
 
 namespace FastHls.Models
 {
-    public struct ServerControl
+    public struct ServerControl: IManifestItem
     {
         public bool CanBlockReload { get; set; }
         public double? CanSkipUntil { get; set; }
         public double? HoldBack { get; set; }
         public double? PartHoldBack { get; set; }
 
-        public override string ToString()
+        public string Render()
         {
-            var pool = new DefaultObjectPoolProvider().CreateStringBuilderPool();
-            var sb = pool.Get();
+            var sb = new StringBuilder();
 
             sb.Append($"#EXT-X-SERVER-CONTROL:CAN-BLOCK-RELOAD={(CanBlockReload ? "YES" : "NO")}");
             if (CanSkipUntil.HasValue)
