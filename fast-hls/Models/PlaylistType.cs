@@ -1,4 +1,4 @@
-namespace FastHls
+namespace FastHls.Models
 {
     public enum PlaylistType
     {

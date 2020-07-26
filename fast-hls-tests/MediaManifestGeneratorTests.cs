@@ -147,7 +147,7 @@ http://example.com/ads/ad1.ts
         public async Task WritesEncryption()
         {
             generator.Start(PlaylistType.EVENT, version: 8, targetDuration: 10);
-            generator.AddEncryption(Encryption.AES128, "https://example.org/enc", iv: "123ABC", keyformat: "abc", keyformatVersions: new int[] { 1, 2 });
+            generator.AddEncryption(EncryptionKind.AES128, "https://example.org/enc", iv: "123ABC", keyformat: "abc", keyformatVersions: new int[] { 1, 2 });
 
             await generator.AssertGeneratedContent(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:EVENT

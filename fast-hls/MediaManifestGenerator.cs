@@ -52,7 +52,7 @@ namespace FastHls
             Append(builder.ToString());
         }
 
-        public void AddEncryption(Encryption encryption, string uri = null, string iv = null, string keyformat = null, int[] keyformatVersions = null)
+        public void AddEncryption(EncryptionKind encryption, string uri = null, string iv = null, string keyformat = null, int[] keyformatVersions = null)
         {
             var builder = _stringBuilderPool.Get();
             builder.Append($"#EXT-X-KEY:METHOD={encryption}");
