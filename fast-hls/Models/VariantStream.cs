@@ -6,7 +6,7 @@ using FastHls.Models.Interfaces;
 
 namespace FastHls.Models
 {
-    public struct VariantStream: IManifestItem
+    public struct VariantStream : IManifestItem
     {
         public string Uri { get; set; }
         public int Bandwidth { get; set; }

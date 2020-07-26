@@ -4,7 +4,7 @@ using FastHls.Models.Interfaces;
 
 namespace FastHls.Models
 {
-    public struct SessionData: IManifestItem
+    public struct SessionData : IManifestItem
     {
         public string DataId { get; set; }
         public string? Value { get; set; }

@@ -5,7 +5,7 @@ using FastHls.Models.Interfaces;
 
 namespace FastHls.Models.Manifests
 {
-    public struct Start: IManifestItem
+    public struct Start : IManifestItem
     {
         public TimeSpan Offset { get; set; }
         public bool? IsPrecise { get; set; }

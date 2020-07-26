@@ -4,7 +4,7 @@ using FastHls.Models.Interfaces;
 
 namespace FastHls.Models
 {
-    public struct RenditionReport: IManifestItem
+    public struct RenditionReport : IManifestItem
     {
         public string Path { get; set; }
         public int LastMsn { get; set; }

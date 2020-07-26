@@ -19,7 +19,7 @@ namespace FastHls.Models
 
             if (IsIndependent.HasValue)
             {
-                builder.Append($",INDEPENDENT={(IsIndependent.Value ? "YES" : "NO")}");
+                builder.Append($",INDEPENDENT={( IsIndependent.Value ? "YES" : "NO" )}");
             }
 
             if (ByteRange.HasValue)
@@ -29,7 +29,7 @@ namespace FastHls.Models
 
             if (HasGap.HasValue)
             {
-                builder.Append($",GAP={(HasGap.Value ? "YES" : "NO")}");
+                builder.Append($",GAP={( HasGap.Value ? "YES" : "NO" )}");
             }
 
             builder.AppendNormalizedNewline();

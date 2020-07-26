@@ -3,7 +3,7 @@ using FastHls.Models.Interfaces;
 
 namespace FastHls.Models
 {
-    public struct ServerControl: IManifestItem
+    public struct ServerControl : IManifestItem
     {
         public bool CanBlockReload { get; set; }
         public double? CanSkipUntil { get; set; }
@@ -14,7 +14,7 @@ namespace FastHls.Models
         {
             var sb = new StringBuilder();
 
-            sb.Append($"#EXT-X-SERVER-CONTROL:CAN-BLOCK-RELOAD={(CanBlockReload ? "YES" : "NO")}");
+            sb.Append($"#EXT-X-SERVER-CONTROL:CAN-BLOCK-RELOAD={( CanBlockReload ? "YES" : "NO" )}");
             if (CanSkipUntil.HasValue)
             {
                 sb.Append($",CAN-SKIP-UNTIL={CanSkipUntil.Value}");
