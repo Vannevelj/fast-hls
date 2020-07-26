@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FastHls.Abstractions;
 
 namespace FastHls.Models.Manifests

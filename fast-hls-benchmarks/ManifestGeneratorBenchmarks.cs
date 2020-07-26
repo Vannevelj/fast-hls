@@ -1,4 +1,10 @@
-﻿namespace FastHlsBenchmarks
+using System.IO;
+using System.Threading.Tasks;
+using BenchmarkDotNet.Attributes;
+using FastHls;
+using FastHls.Models;
+
+namespace FastHlsBenchmarks
 {
     [MemoryDiagnoser]
     public class ManifestGeneratorBenchmarks

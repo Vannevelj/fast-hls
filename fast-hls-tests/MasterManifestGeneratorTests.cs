@@ -1,3 +1,8 @@
+using System.Threading.Tasks;
+using FastHls;
+using FastHls.Models;
+using Xunit;
+
 namespace FastHlsTests
 {
     public class MasterManifestGeneratorTests

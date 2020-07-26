@@ -1,3 +1,4 @@
+using System.Text;
 using FastHls.Extensions;
 using FastHls.Models.Interfaces;
 

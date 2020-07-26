@@ -1,4 +1,6 @@
-﻿using FastHls.Abstractions;
+using System.IO;
+using System.Threading.Tasks;
+using FastHls.Abstractions;
 using FastHls.Extensions;
 using FastHls.Models;
 

@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using FastHls.Models.Interfaces;
+
 namespace FastHls.Models.Manifests
 {
     public class MediaManifest

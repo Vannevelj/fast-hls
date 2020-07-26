@@ -1,3 +1,4 @@
+using System.IO;
 using FastHls.Abstractions;
 using FastHls.Extensions;
 using FastHls.Models;

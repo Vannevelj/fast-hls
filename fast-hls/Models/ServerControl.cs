@@ -1,3 +1,5 @@
+using Microsoft.Extensions.ObjectPool;
+
 namespace FastHls.Models
 {
     public struct ServerControl

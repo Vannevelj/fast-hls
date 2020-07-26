@@ -1,3 +1,4 @@
+using System.Text;
 using FastHls.Extensions;
 using FastHls.Models.Interfaces;
 
@@ -16,7 +17,7 @@ namespace FastHls.Models
         {
             var builder = new StringBuilder();
 
-            builder.Append($"#EXT-X-I-FRAME-STREAM-INF:BANDWIDTH={Bandwidth},URI=\"{URI}\"");
+            builder.Append($"#EXT-X-I-FRAME-STREAM-INF:BANDWIDTH={Bandwidth},URI=\"{Uri}\"");
 
             if (AverageBandwidth.HasValue)
             {

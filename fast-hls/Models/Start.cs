@@ -1,3 +1,5 @@
+using System;
+
 namespace FastHls.Models.Manifests
 {
     public struct Start

@@ -1,3 +1,5 @@
+using System;
+
 namespace FastHls.Models
 {
     public struct Resolution : IEquatable<Resolution>

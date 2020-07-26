@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace FastHls.Extensions
 {
     public static class StringBuilderExtensions
