@@ -2,7 +2,7 @@ namespace FastHls.Models
 {
     public enum HintType
     {
-         PART = 0,
-         MAP = 1
+        PART = 0,
+        MAP = 1
     }
 }

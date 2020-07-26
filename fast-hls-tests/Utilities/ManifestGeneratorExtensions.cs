@@ -1,8 +1,3 @@
-using System.IO;
-using System.Threading.Tasks;
-using FastHls.Abstractions;
-using Xunit;
-
 namespace FastHlsTests
 {
     internal static class ManifestGeneratorExtensions

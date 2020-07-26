@@ -1,6 +1,6 @@
 namespace FastHls.Models.Interfaces
 {
-    public interface ITimelineItem 
+    public interface ITimelineItem
     {
 
     }

@@ -1,11 +1,4 @@
-﻿using System;
-using FastHls;
-using BenchmarkDotNet.Attributes;
-using System.IO;
-using System.Threading.Tasks;
-using FastHls.Models;
-
-namespace FastHlsBenchmarks
+﻿namespace FastHlsBenchmarks
 {
     [MemoryDiagnoser]
     public class ManifestGeneratorBenchmarks
@@ -72,7 +65,7 @@ namespace FastHlsBenchmarks
                     uri: "high.m3u8",
                     bandwidth: 9_000_000,
                     averageBandwidth: 8_500_000,
-                    codecs: new [] { "avc1.640029", "mp4a.40.2" },
+                    codecs: new[] { "avc1.640029", "mp4a.40.2" },
                     resolution: new Resolution(720, 1024),
                     audio: "audio-hi",
                     video: "video-hi",

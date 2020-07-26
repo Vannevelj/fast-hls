@@ -1,6 +1,3 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
-
 namespace FastHls.Models
 {
     public struct Resolution : IEquatable<Resolution>

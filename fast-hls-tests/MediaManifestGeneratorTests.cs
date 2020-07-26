@@ -1,11 +1,3 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using FastHls;
-using FastHls.Abstractions;
-using FastHls.Models;
-using Xunit;
-
 namespace FastHlsTests
 {
     public class MediaManifestGeneratorTests
@@ -236,7 +228,8 @@ http://example.com/ads/ad1.ts
         [Fact]
         public async Task WritesServerControl()
         {
-            var serverControl = new ServerControl {
+            var serverControl = new ServerControl
+            {
                 CanBlockReload = true,
                 CanSkipUntil = 3,
                 HoldBack = 2,

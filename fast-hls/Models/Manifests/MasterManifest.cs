@@ -1,11 +1,8 @@
-using System.Collections.Generic;
 using FastHls.Abstractions;
-using FastHls.Extensions;
-using FastHls.Models;
 
 namespace FastHls.Models.Manifests
 {
-    public class MasterManifest: AbstractManifestGenerator
+    public class MasterManifest : AbstractManifestGenerator
     {
         public int Version { get; set; }
         public bool HasIndependentSegments { get; set; }
@@ -14,7 +11,7 @@ namespace FastHls.Models.Manifests
         public List<IFrameVariantStream> IFrameVariantStreams { get; set; }
         public List<SessionData> SessionData { get; set; }
 
-        private void Render() 
+        private void Render()
         {
             AppendLine("#EXTM3U");
             AppendLine($"#EXT-X-VERSION:{Version}");

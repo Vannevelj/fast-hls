@@ -1,8 +1,3 @@
-using System.Threading.Tasks;
-using FastHls;
-using FastHls.Models;
-using Xunit;
-
 namespace FastHlsTests
 {
     public class MasterManifestGeneratorTests
@@ -43,7 +38,7 @@ namespace FastHlsTests
                 autoselect: true,
                 forced: false,
                 instreamId: null,
-                characteristics: new string[] {"public.accessibility.describes-video"}
+                characteristics: new string[] { "public.accessibility.describes-video" }
             );
 
             await generator.AssertGeneratedContent(@"#EXTM3U
@@ -79,7 +74,7 @@ namespace FastHlsTests
                 uri: "high.m3u8",
                 bandwidth: 9_000_000,
                 averageBandwidth: 8_500_000,
-                codecs: new [] { "avc1.640029", "mp4a.40.2" },
+                codecs: new[] { "avc1.640029", "mp4a.40.2" },
                 resolution: new Resolution(720, 1024),
                 audio: "audio-hi",
                 video: "video-hi",
@@ -103,7 +98,7 @@ high.m3u8
                 uri: "high.m3u8",
                 bandwidth: 9_000_000,
                 averageBandwidth: 8_500_000,
-                codecs: new [] { "avc1.640029", "mp4a.40.2" },
+                codecs: new[] { "avc1.640029", "mp4a.40.2" },
                 resolution: new Resolution(720, 1024),
                 video: "video-hi"
             );

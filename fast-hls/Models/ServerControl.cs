@@ -1,5 +1,3 @@
-using Microsoft.Extensions.ObjectPool;
-
 namespace FastHls.Models
 {
     public struct ServerControl
@@ -9,21 +7,24 @@ namespace FastHls.Models
         public double? HoldBack { get; set; }
         public double? PartHoldBack { get; set; }
 
-        public override string ToString() 
+        public override string ToString()
         {
             var pool = new DefaultObjectPoolProvider().CreateStringBuilderPool();
             var sb = pool.Get();
 
             sb.Append($"#EXT-X-SERVER-CONTROL:CAN-BLOCK-RELOAD={(CanBlockReload ? "YES" : "NO")}");
-            if (CanSkipUntil.HasValue) {
+            if (CanSkipUntil.HasValue)
+            {
                 sb.Append($",CAN-SKIP-UNTIL={CanSkipUntil.Value}");
             }
 
-            if (HoldBack.HasValue) {
+            if (HoldBack.HasValue)
+            {
                 sb.Append($",HOLD-BACK={HoldBack.Value}");
             }
 
-            if (PartHoldBack.HasValue) {
+            if (PartHoldBack.HasValue)
+            {
                 sb.Append($",PART-HOLD-BACK={PartHoldBack.Value}");
             }
 

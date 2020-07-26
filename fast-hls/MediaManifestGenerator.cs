@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using FastHls.Abstractions;
+﻿using FastHls.Abstractions;
 using FastHls.Extensions;
 using FastHls.Models;
 
@@ -10,15 +6,15 @@ namespace FastHls
 {
     public class MediaManifestGenerator : AbstractManifestGenerator
     {
-        public MediaManifestGenerator() : base() {}
+        public MediaManifestGenerator() : base() { }
 
-        public MediaManifestGenerator(Stream output, bool continuousPersistence) : base(output, continuousPersistence) {}
+        public MediaManifestGenerator(Stream output, bool continuousPersistence) : base(output, continuousPersistence) { }
 
         public void Start(PlaylistType playlistType, int version, double targetDuration, int? discontinuitySequence = null, ServerControl? serverControl = null, double? partDuration = null)
         {
             AppendLine($"#EXTM3U");
             AppendLine($"#EXT-X-PLAYLIST-TYPE:{playlistType}");
-            if (serverControl.HasValue) 
+            if (serverControl.HasValue)
             {
                 AppendLine(serverControl.Value.ToString());
             }
@@ -31,7 +27,7 @@ namespace FastHls
                 AppendLine($"#EXT-X-DISCONTINUITY-SEQUENCE:{discontinuitySequence.Value}");
             }
 
-            if (partDuration.HasValue) 
+            if (partDuration.HasValue)
             {
                 AppendLine($"#EXT-X-PART-INF:PART-TARGET={partDuration.Value}");
             }
@@ -88,20 +84,23 @@ namespace FastHls
             AppendLine(path);
         }
 
-        public void AddPartialFile(string path, double duration, bool isIndependent = false, ByteRange? byteRange = null, bool hasGap = false) 
+        public void AddPartialFile(string path, double duration, bool isIndependent = false, ByteRange? byteRange = null, bool hasGap = false)
         {
             var builder = _stringBuilderPool.Get();
             builder.Append($"#EXT-X-PART:DURATION={duration},URI=\"{path}\"");
 
-            if (isIndependent) {
+            if (isIndependent)
+            {
                 builder.Append($",INDEPENDENT={(isIndependent ? "YES" : "NO")}");
             }
 
-            if (byteRange.HasValue) {
+            if (byteRange.HasValue)
+            {
                 builder.Append($",BYTERANGE={byteRange.Value}");
             }
 
-            if (hasGap) {
+            if (hasGap)
+            {
                 builder.Append($",GAP={(hasGap ? "YES" : "NO")}");
             }
 
@@ -129,7 +128,8 @@ namespace FastHls
             var builder = _stringBuilderPool.Get();
             builder.Append($"#EXT-X-MAP:URI=\"{uri}\"");
 
-            if (byteRange.HasValue) {
+            if (byteRange.HasValue)
+            {
                 builder.Append($",BYTERANGE=\"{byteRange.Value}\"");
             }
 
@@ -142,11 +142,13 @@ namespace FastHls
             var builder = _stringBuilderPool.Get();
             builder.Append($"#EXT-X-PRELOAD-HINT:TYPE={type},URI=\"{path}\"");
 
-            if (start.HasValue) {
+            if (start.HasValue)
+            {
                 builder.Append($",BYTERANGE-START=\"{start.Value}\"");
             }
 
-            if (length.HasValue) {
+            if (length.HasValue)
+            {
                 builder.Append($",BYTERANGE-LENGTH=\"{length.Value}\"");
             }
 
@@ -159,7 +161,8 @@ namespace FastHls
             var builder = _stringBuilderPool.Get();
             builder.Append($"#EXT-X-RENDITION-REPORT:URI=\"{path}\",LAST-MSN={lastMsn}");
 
-            if (lastPart.HasValue) {
+            if (lastPart.HasValue)
+            {
                 builder.Append($",LAST-PART={lastPart.Value}");
             }
 
@@ -167,7 +170,7 @@ namespace FastHls
             Append(builder.ToString());
         }
 
-        public override async Task Finish() 
+        public override async Task Finish()
         {
             AppendLine("#EXT-X-ENDLIST");
 

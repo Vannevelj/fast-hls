@@ -1,8 +1,7 @@
-using System.Text;
 using FastHls.Extensions;
 using FastHls.Models.Interfaces;
 
-namespace FastHls.Models 
+namespace FastHls.Models
 {
     public struct Media : IManifestItem
     {
@@ -10,13 +9,13 @@ namespace FastHls.Models
         public string GroupId { get; set; }
         public string Name { get; set; }
         public string? Uri { get; set; }
-        public string? Language { get; set;}
-        public string AssocLanguage {get;set;}
-        public bool IsDefault {get;set;}
-        public bool AutoSelect {get;set;}
-        public bool Forced {get;set;}
-        public string? InstreamId {get;set;}
-        public string[]? Characteristics {get;set;}
+        public string? Language { get; set; }
+        public string AssocLanguage { get; set; }
+        public bool IsDefault { get; set; }
+        public bool AutoSelect { get; set; }
+        public bool Forced { get; set; }
+        public string? InstreamId { get; set; }
+        public string[]? Characteristics { get; set; }
 
         public string Render()
         {

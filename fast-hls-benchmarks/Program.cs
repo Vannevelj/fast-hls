@@ -1,6 +1,3 @@
-using System;
-using BenchmarkDotNet.Running;
-
 namespace FastHlsBenchmarks
 {
     public class Program

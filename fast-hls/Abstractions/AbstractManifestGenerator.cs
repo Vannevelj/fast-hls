@@ -1,8 +1,4 @@
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 using FastHls.Extensions;
-using Microsoft.Extensions.ObjectPool;
 
 namespace FastHls.Abstractions
 {
@@ -27,12 +23,14 @@ namespace FastHls.Abstractions
             _playlist = _stringBuilderPool.Get();
         }
 
-        protected void Append(string text) {
+        protected void Append(string text)
+        {
             _playlist.Append(text);
             // await WriteContinuously(text);
         }
 
-        protected void AppendLine(string text) {
+        protected void AppendLine(string text)
+        {
             _playlist.AppendNormalizedline(text);
         }
 
