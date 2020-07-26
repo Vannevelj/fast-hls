@@ -1,4 +1,4 @@
-namespace FastHls.Models
+namespace FastHls.Models.Interfaces
 {
     public interface ITimelineItem 
     {

@@ -1,3 +1,5 @@
+using FastHls.Models.Interfaces;
+
 namespace FastHls.Models
 {
     public struct ByteRange
