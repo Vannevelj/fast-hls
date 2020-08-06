@@ -1,83 +1,62 @@
+using System;
 using System.Collections.Generic;
-using FastHls.Abstractions;
 using FastHls.Models.Interfaces;
 
 namespace FastHls.Models.Manifests
 {
-    public class MediaManifest : AbstractManifestGenerator
+    public class MediaManifest
     {
         public int Version { get; }
         public PlaylistType PlaylistType { get; }
+        public double TargetDuration { get; }
 
-        public ServerControl? ServerControl { get; set; }
-        public double TargetDuration { get; set; }
-        public int MediaSequence { get; set; }
-        public int? DiscontinuitySequence { get; set; }
-        public double? PartDuration { get; set; }
-        public Start? Start { get; set; }
-        public Map? Map { get; set; }
-        public Encryption? Encryption { get; set; }
-        public PreloadHint PartPreloadHint { get; set; }
-        public PreloadHint MapPreloadHint { get; set; }
-        public List<RenditionReport> RenditionReports { get; set; } = new List<RenditionReport>();
-        public List<ITimelineItem> Timeline { get; set; } = new List<ITimelineItem>();
+        public ServerControl? ServerControl { get; }
+        public int MediaSequence { get; private set; }
+        public int? DiscontinuitySequence { get; private set; }
+        public double? PartDuration { get; }
+        public Start? Start { get; }
+        public Map? Map { get; }
+        public Encryption? Encryption { get; }
+        public PreloadHint PartPreloadHint { get; }
+        public PreloadHint MapPreloadHint { get; }
+        public List<RenditionReport> RenditionReports { get; } = new List<RenditionReport>();
+        internal List<ITimelineItem> Timeline { get; } = new List<ITimelineItem>();
 
-        public MediaManifest(int version, PlaylistType playlistType)
+        public MediaManifest(
+            int version,
+            PlaylistType playlistType,
+            double targetDuration,
+            ServerControl? serverControl = null,
+            double? partDuration = null,
+            Start? start = null,
+            Map? map = null,
+            Encryption? encryption = null)
         {
             Version = version;
             PlaylistType = playlistType;
+            TargetDuration = targetDuration;
+            ServerControl = serverControl;
+            PartDuration = partDuration;
+            Start = start;
+            Map = map;
+            Encryption = encryption;
         }
 
-        public void Render()
+        public void Add(ITimelineItem timelineItem) => Timeline.Add(timelineItem);
+
+        public void AddAndIncrementSequence(ITimelineItem timelineItem)
         {
-            AppendLine($"#EXTM3U");
-            AppendLine($"#EXT-X-PLAYLIST-TYPE:{PlaylistType}");
-            if (ServerControl.HasValue)
+            Add(timelineItem);
+            switch (timelineItem)
             {
-                AppendLine(ServerControl.Value.Render());
-            }
-            AppendLine($"#EXT-X-TARGETDURATION:{TargetDuration}");
-            AppendLine($"#EXT-X-VERSION:{Version}");
-            AppendLine($"#EXT-X-MEDIA-SEQUENCE:0");
-
-            if (DiscontinuitySequence.HasValue)
-            {
-                AppendLine($"#EXT-X-DISCONTINUITY-SEQUENCE:{DiscontinuitySequence.Value}");
-            }
-
-            if (PartDuration.HasValue)
-            {
-                AppendLine($"#EXT-X-PART-INF:PART-TARGET={PartDuration.Value}");
-            }
-
-            if (Start.HasValue)
-            {
-                Append(Start.Value.Render());
-            }
-
-            if (Encryption.HasValue)
-            {
-                Append(Encryption.Value.Render());
-            }
-
-            if (Map.HasValue)
-            {
-                Append(Map.Value.Render());
-            }
-
-            foreach (var file in Timeline)
-            {
-                Append(file.Render());
-            }
-
-            foreach (var report in RenditionReports)
-            {
-                Append(report.Render());
-            }
-
-            if (PlaylistType == PlaylistType.VOD)
-            {
-                AppendLine("#EXT-X-ENDLIST");
+                case MediaFile _:
+                    MediaSequence++;
+                    break;
+                case Discontinuity _:
+                    DiscontinuitySequence++;
+                    break;
+                default:
+                    throw new ArgumentException($"Unsupported value: {timelineItem}");
             }
         }
     }

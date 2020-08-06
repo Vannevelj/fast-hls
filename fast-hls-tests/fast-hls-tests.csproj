@@ -24,4 +24,8 @@
     <ProjectReference Include="..\fast-hls\fast-hls.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Manifests\" />
+  </ItemGroup>
+
 </Project>
