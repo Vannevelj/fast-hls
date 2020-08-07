@@ -4,7 +4,7 @@ namespace FastHls.Models
     {
         private readonly string _value;
 
-        private EncryptionKind(string value) => this._value = value;
+        private EncryptionKind(string value) => _value = value;
 
         public static readonly EncryptionKind AES128 = "AES-128";
         public static readonly EncryptionKind SAMPLEAES = "SAMPLE-AES";
