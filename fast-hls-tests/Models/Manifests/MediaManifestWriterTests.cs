@@ -64,5 +64,30 @@ namespace FastHlsTests.Models.Manifests
 #EXT-X-MEDIA-SEQUENCE:0
 #EXT-X-DISCONTINUITY-SEQUENCE:2", output);
         }
+
+        [Fact]
+        public async Task WritesMediaSequence()
+        {
+            var manifest = new MediaManifest(
+                version: 8,
+                playlistType: PlaylistType.EVENT,
+                targetDuration: 10
+            );
+
+            manifest.Add(new MediaFile { Path = "test.mp4", Duration = 10 });
+            manifest.AddAndIncrementSequence(new MediaFile { Path = "test2.mp4", Duration = 10 });
+
+            var outputStream = new MemoryStream();
+            await new MediaManifestWriter(manifest, outputStream).Render();
+            outputStream.Position = 0;
+            var output = Encoding.ASCII.GetString(outputStream.ToArray());
+            AssertEqualWithNewline(@"#EXTM3U
+#EXT-X-PLAYLIST-TYPE:EVENT
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:8
+#EXT-X-MEDIA-SEQUENCE:1
+#EXTINF:10.0,
+test2.mp4", output);
+        }
     }
 }

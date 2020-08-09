@@ -8,7 +8,6 @@ namespace FastHls.Models.Manifests
     public class MediaManifestWriter : AbstractManifestWriter
     {
         private readonly MediaManifest _manifest;
-        private int? _lastMediaSequence = null;
 
         public MediaManifestWriter(MediaManifest manifest, Stream output) : base(output)
         {
@@ -66,11 +65,18 @@ namespace FastHls.Models.Manifests
         private void RenderTimeline()
         {
             var discontinuityCounter = 0;
+            var mediaCounter = 0;
+
             foreach (var item in _manifest.Timeline)
             {
                 if (_manifest.DiscontinuitySequence > discontinuityCounter && item is Discontinuity)
                 {
                     discontinuityCounter++;
+                    continue;
+                }
+                else if (_manifest.MediaSequence > mediaCounter && item is MediaFile)
+                {
+                    mediaCounter++;
                     continue;
                 }
                 Append(item.Render());
