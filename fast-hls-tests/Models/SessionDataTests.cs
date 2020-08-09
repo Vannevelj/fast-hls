@@ -1,5 +1,6 @@
-﻿using FastHls.Models;
+using FastHls.Models;
 using Xunit;
+using static FastHlsTests.AssertExtensions;
 
 namespace FastHlsTests.Models
 {
@@ -16,7 +17,7 @@ namespace FastHlsTests.Models
                 Uri = uri,
                 Language = language
             };
-            Assert.Equal(expected, sessionData.Render());
+            AssertEqualWithNewline(expected, sessionData.Render());
         }
     }
 }

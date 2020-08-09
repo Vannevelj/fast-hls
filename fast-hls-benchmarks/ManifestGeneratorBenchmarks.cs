@@ -9,36 +9,36 @@ namespace FastHlsBenchmarks
     [MemoryDiagnoser]
     public class ManifestGeneratorBenchmarks
     {
-        [Benchmark]
-        public async Task MediaManifest_WritingDataInternally()
-        {
-            var manifest = new MediaManifest(version: 8, playlistType: PlaylistType.VOD, targetDuration: 2.0);
-            for (var i = 0; i < 1000; i++)
-            {
-                manifest.Add(new MediaFile
-                {
-                    Path = $"{i}.ts",
-                    Duration = 2.0
-                });
-            }
-            await manifest.Finish();
-        }
+        //[Benchmark]
+        //public async Task MediaManifest_WritingDataInternally()
+        //{
+        //    var manifest = new MediaManifest(version: 8, playlistType: PlaylistType.VOD, targetDuration: 2.0);
+        //    for (var i = 0; i < 1000; i++)
+        //    {
+        //        manifest.Add(new MediaFile
+        //        {
+        //            Path = $"{i}.ts",
+        //            Duration = 2.0
+        //        });
+        //    }
+        //    await manifest.Finish();
+        //}
 
-        [Benchmark]
-        public async Task MediaManifest_WritingDataToMemoryOutputStream()
-        {
-            var manifest = new MediaManifest(version: 8, playlistType: PlaylistType.VOD, targetDuration: 2.0);
-            for (var i = 0; i < 1000; i++)
-            {
-                manifest.Add(new MediaFile
-                {
-                    Path = $"{i}.ts",
-                    Duration = 2.0
-                });
-            }
-            await manifest.Finish();
-            await manifest.WriteToStream(new MemoryStream());
-        }
+        //[Benchmark]
+        //public async Task MediaManifest_WritingDataToMemoryOutputStream()
+        //{
+        //    var manifest = new MediaManifest(version: 8, playlistType: PlaylistType.VOD, targetDuration: 2.0);
+        //    for (var i = 0; i < 1000; i++)
+        //    {
+        //        manifest.Add(new MediaFile
+        //        {
+        //            Path = $"{i}.ts",
+        //            Duration = 2.0
+        //        });
+        //    }
+        //    await manifest.Finish();
+        //    await manifest.WriteToStream(new MemoryStream());
+        //}
 
         //[Benchmark]
         //public async Task MediaManifest_WritingDataToMemoryOutputStreamContinuously()

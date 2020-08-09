@@ -1,5 +1,6 @@
 using FastHls.Models;
 using Xunit;
+using static FastHlsTests.AssertExtensions;
 
 namespace FastHlsTests.Models
 {
@@ -16,7 +17,7 @@ namespace FastHlsTests.Models
                 Start = start,
                 Length = length
             };
-            Assert.Equal(expected, preloadHint.Render());
+            AssertEqualWithNewline(expected, preloadHint.Render());
         }
     }
 }

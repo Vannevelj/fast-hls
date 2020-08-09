@@ -1,5 +1,6 @@
 using FastHls.Models;
 using Xunit;
+using static FastHlsTests.AssertExtensions;
 
 namespace FastHlsTests.Models
 {
@@ -16,7 +17,7 @@ namespace FastHlsTests.Models
                 LastMsn = lastMsn,
                 LastPart = lastPart
             };
-            Assert.Equal(expected, renditionReport.Render());
+            AssertEqualWithNewline(expected, renditionReport.Render());
         }
     }
 }

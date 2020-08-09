@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FastHls.Models;
 using Xunit;
+using static FastHlsTests.AssertExtensions;
 
 namespace FastHlsTests.Models
 {
@@ -31,7 +32,7 @@ namespace FastHlsTests.Models
                 InstreamId = instreamId,
                 Characteristics = characteristics
             };
-            Assert.Equal(expected, media.Render());
+            AssertEqualWithNewline(expected, media.Render());
         }
     }
 }

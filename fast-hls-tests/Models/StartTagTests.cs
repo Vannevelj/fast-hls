@@ -1,6 +1,7 @@
 using System;
 using FastHls.Models.Manifests;
 using Xunit;
+using static FastHlsTests.AssertExtensions;
 
 namespace FastHlsTests.Models
 {
@@ -15,7 +16,7 @@ namespace FastHlsTests.Models
                 Offset = TimeSpan.FromSeconds(offset),
                 IsPrecise = isPrecise
             };
-            Assert.Equal(expected, startTag.Render());
+            AssertEqualWithNewline(expected, startTag.Render());
         }
     }
 }

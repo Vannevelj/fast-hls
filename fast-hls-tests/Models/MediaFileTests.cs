@@ -1,5 +1,6 @@
-﻿using FastHls.Models;
+using FastHls.Models;
 using Xunit;
+using static FastHlsTests.AssertExtensions;
 
 namespace FastHlsTests.Models
 {
@@ -17,7 +18,7 @@ http://example.com/movie1/fileSequenceA.ts")]
                 Duration = duration,
                 ByteRange = byteRange
             };
-            Assert.Equal(expected, mediaFile.Render());
+            AssertEqualWithNewline(expected, mediaFile.Render());
         }
     }
 }

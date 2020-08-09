@@ -1,5 +1,6 @@
-﻿using FastHls.Models;
+using FastHls.Models;
 using Xunit;
+using static FastHlsTests.AssertExtensions;
 
 namespace FastHlsTests.Models
 {
@@ -18,7 +19,7 @@ namespace FastHlsTests.Models
                 HasGap = hasGap,
                 ByteRange = length.HasValue ? new ByteRange(length.Value, offset) : default
             };
-            Assert.Equal(expected, mediaFile.Render());
+            AssertEqualWithNewline(expected, mediaFile.Render());
         }
     }
 }

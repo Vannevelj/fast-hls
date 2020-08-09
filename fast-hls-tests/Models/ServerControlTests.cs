@@ -1,5 +1,6 @@
 using FastHls.Models;
 using Xunit;
+using static FastHlsTests.AssertExtensions;
 
 namespace FastHlsTests.Models
 {
@@ -16,7 +17,7 @@ namespace FastHlsTests.Models
                 HoldBack = holdBack,
                 PartHoldBack = partHoldBack
             };
-            Assert.Equal(expected, serverControl.Render());
+            AssertEqualWithNewline(expected, serverControl.Render());
         }
     }
 }

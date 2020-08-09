@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using FastHls.Models;
 using Xunit;
+using static FastHlsTests.AssertExtensions;
 
 namespace FastHlsTests.Models
 {
@@ -29,7 +30,7 @@ high.m3u8" },
                 Subtitles = subtitles,
                 ClosedCaptions = closedCaptions
             };
-            Assert.Equal(expected, variantStream.Render());
+            AssertEqualWithNewline(expected, variantStream.Render());
         }
     }
 }

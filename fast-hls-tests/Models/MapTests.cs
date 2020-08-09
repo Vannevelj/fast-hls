@@ -1,5 +1,6 @@
 using FastHls.Models;
 using Xunit;
+using static FastHlsTests.AssertExtensions;
 
 namespace FastHlsTests.Models
 {
@@ -15,7 +16,7 @@ namespace FastHlsTests.Models
                 Uri = uri,
                 ByteRange = new ByteRange(length, offset)
             };
-            Assert.Equal(expected, map.Render());
+            AssertEqualWithNewline(expected, map.Render());
         }
     }
 }

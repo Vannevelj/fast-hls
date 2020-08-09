@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using FastHls.Models;
 using Xunit;
+using static FastHlsTests.AssertExtensions;
 
 namespace FastHlsTests.Models
 {
@@ -26,7 +27,7 @@ namespace FastHlsTests.Models
                 Resolution = resolution,
                 Video = video
             };
-            Assert.Equal(expected, iframeVariantStream.Render());
+            AssertEqualWithNewline(expected, iframeVariantStream.Render());
         }
     }
 }
