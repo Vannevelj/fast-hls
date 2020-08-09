@@ -9,6 +9,14 @@ namespace FastHlsTests.Models.Manifests
 {
     public class MasterManifestWriterTests
     {
+        private async Task<string> RenderManifest(MasterManifest manifest)
+        {
+            var outputStream = new MemoryStream();
+            await new MasterManifestWriter(manifest, outputStream).Render();
+            outputStream.Position = 0;
+            return Encoding.ASCII.GetString(outputStream.ToArray());
+        }
+
         [Theory]
         [InlineData(3, false, @"#EXTM3U
 #EXT-X-VERSION:3")]
@@ -21,11 +29,8 @@ namespace FastHlsTests.Models.Manifests
                 version,
                 hasIndependentSegments
             );
-            var outputStream = new MemoryStream();
-            await new MasterManifestWriter(manifest, outputStream).Render();
-            outputStream.Position = 0;
-            var output = Encoding.ASCII.GetString(outputStream.ToArray());
-            AssertEqualWithNewline(expected, output);
+
+            AssertEqualWithNewline(expected, await RenderManifest(manifest));
         }
     }
 }
