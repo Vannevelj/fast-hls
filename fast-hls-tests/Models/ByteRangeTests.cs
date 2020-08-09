@@ -11,7 +11,7 @@ namespace FastHlsTests.Models
         public void WritesByteRange(int length, int? offset, string expected)
         {
             var byteRange = new ByteRange(length, offset);
-            Assert.Equal(expected, byteRange.ToString());
+            Assert.Equal(expected, byteRange.Render());
         }
     }
 }

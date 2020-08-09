@@ -14,6 +14,7 @@ namespace FastHls.Models.Manifests
         public MasterManifest(int version, bool hasIndependentSegments = false)
         {
             Version = version;
+            HasIndependentSegments = hasIndependentSegments;
         }
     }
 }
