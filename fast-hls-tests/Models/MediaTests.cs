@@ -11,7 +11,7 @@ namespace FastHlsTests.Models
             new List<object[]>
             {
                 new object[] { MediaType.CLOSEDCAPTIONS, "audio-hi", "Dutch", "dutch.m3u8", null, null, false, false, false, null, null, @"#EXT-X-MEDIA:TYPE=CLOSED-CAPTIONS,GROUP-ID=""audio-hi"",NAME=""Dutch"",URI=""dutch.m3u8""" },
-                new object[] { MediaType.CLOSEDCAPTIONS, "audio-hi", "Dutch", "dutch.m3u8", "nl-BE", "nl-NL", true, true, false, null, new string[] { "public.accessibility.describes-video" }, @"#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID=""audio-hi"",NAME=""Dutch"",LANGUAGE=""nl-BE"",ASSOC-LANGUAGE=""nl-NL"",DEFAULT=YES,AUTOSELECT=YES,CHARACTERISTICS=""public.accessibility.describes-video"",URI=""dutch.m3u8""" },
+                new object[] { MediaType.AUDIO, "audio-hi", "Dutch", "dutch.m3u8", "nl-BE", "nl-NL", true, true, false, null, new string[] { "public.accessibility.describes-video" }, @"#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID=""audio-hi"",NAME=""Dutch"",LANGUAGE=""nl-BE"",ASSOC-LANGUAGE=""nl-NL"",DEFAULT=YES,AUTOSELECT=YES,CHARACTERISTICS=""public.accessibility.describes-video"",URI=""dutch.m3u8""" },
             };
 
         [Theory]

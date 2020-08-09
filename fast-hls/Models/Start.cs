@@ -13,7 +13,7 @@ namespace FastHls.Models.Manifests
         public string Render()
         {
             var builder = new StringBuilder();
-            builder.Append($"#EXT-X-START:TIME-OFFSET={Offset.TotalSeconds}");
+            builder.Append(FormattableString.Invariant($"#EXT-X-START:TIME-OFFSET={Offset.TotalSeconds}"));
 
             if (IsPrecise.HasValue && IsPrecise.Value)
             {

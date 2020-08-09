@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using FastHls.Models.Interfaces;
 
@@ -12,7 +13,7 @@ namespace FastHls.Models
         public string Render()
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"#EXTINF:{Duration:F1},");
+            sb.AppendLine(FormattableString.Invariant($"#EXTINF:{Duration:F1},"));
             if (ByteRange.HasValue)
             {
                 sb.AppendLine($"#EXT-X-BYTERANGE:{ByteRange}");
