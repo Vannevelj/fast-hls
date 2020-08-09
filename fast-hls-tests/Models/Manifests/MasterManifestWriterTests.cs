@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FastHls.Models.Manifests;
 using Xunit;
+using static FastHlsTests.AssertExtensions;
 
 namespace FastHlsTests.Models.Manifests
 {
@@ -24,7 +25,7 @@ namespace FastHlsTests.Models.Manifests
             await new MasterManifestWriter(manifest, outputStream).Render();
             outputStream.Position = 0;
             var output = Encoding.ASCII.GetString(outputStream.ToArray());
-            Assert.Equal(expected, output);
+            AssertEqualWithNewline(expected, output);
         }
     }
 }

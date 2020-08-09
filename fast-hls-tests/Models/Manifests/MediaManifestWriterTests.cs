@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FastHls.Models;
 using FastHls.Models.Manifests;
 using Xunit;
+using static FastHlsTests.AssertExtensions;
 
 namespace FastHlsTests.Models.Manifests
 {
@@ -14,7 +15,8 @@ namespace FastHlsTests.Models.Manifests
 #EXT-X-PLAYLIST-TYPE:VOD
 #EXT-X-TARGETDURATION:10
 #EXT-X-VERSION:8
-#EXT-X-MEDIA-SEQUENCE:0")]
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-ENDLIST")]
         [InlineData(8, PlaylistType.EVENT, 10, null, null, null, null, null, @"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:EVENT
 #EXT-X-TARGETDURATION:10
@@ -36,7 +38,7 @@ namespace FastHlsTests.Models.Manifests
             await new MediaManifestWriter(manifest, outputStream).Render();
             outputStream.Position = 0;
             var output = Encoding.ASCII.GetString(outputStream.ToArray());
-            Assert.Equal(expected, output);
+            AssertEqualWithNewline(expected, output);
         }
 
         [Fact]
@@ -55,7 +57,7 @@ namespace FastHlsTests.Models.Manifests
             await new MediaManifestWriter(manifest, outputStream).Render();
             outputStream.Position = 0;
             var output = Encoding.ASCII.GetString(outputStream.ToArray());
-            Assert.Equal(@"#EXTM3U
+            AssertEqualWithNewline(@"#EXTM3U
 #EXT-X-PLAYLIST-TYPE:EVENT
 #EXT-X-TARGETDURATION:10
 #EXT-X-VERSION:8

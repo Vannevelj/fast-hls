@@ -42,6 +42,8 @@ namespace FastHls.Models.Manifests
             {
                 Append(sessionData.Render());
             }
+
+            await WriteToOutput();
         }
     }
 }

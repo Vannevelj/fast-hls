@@ -12,7 +12,7 @@ namespace FastHls.Models.Manifests
 
         public ServerControl? ServerControl { get; }
         public int MediaSequence { get; private set; }
-        public int? DiscontinuitySequence { get; private set; }
+        public int DiscontinuitySequence { get; private set; }
         public double? PartDuration { get; }
         public Start? Start { get; }
         public Map? Map { get; }
@@ -53,7 +53,7 @@ namespace FastHls.Models.Manifests
                     MediaSequence++;
                     break;
                 case Discontinuity _:
-                    DiscontinuitySequence++;
+                    DiscontinuitySequence = DiscontinuitySequence + 1;
                     break;
                 default:
                     throw new ArgumentException($"Unsupported value: {timelineItem}");

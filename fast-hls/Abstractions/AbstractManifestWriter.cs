@@ -34,9 +34,9 @@ namespace FastHls.Abstractions
             _playlist.AppendNormalizedline(text);
         }
 
-        public async ValueTask WriteToStream(Stream output)
+        protected async ValueTask WriteToOutput()
         {
-            await output.WriteAsync(Encoding.UTF8.GetBytes(_playlist.ToString()));
+            await _output.WriteAsync(Encoding.UTF8.GetBytes(_playlist.ToString()));
         }
 
         public virtual async Task Finish()

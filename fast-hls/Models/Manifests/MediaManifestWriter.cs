@@ -1,4 +1,5 @@
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using FastHls.Abstractions;
 
@@ -16,13 +17,15 @@ namespace FastHls.Models.Manifests
 
         public async Task Render()
         {
-            await RenderHeader();
-            await RenderTimeline();
+            RenderHeader();
+            RenderTimeline();
+
+            await WriteToOutput();
 
             // or, RenderDifference()
         }
 
-        private async Task RenderHeader()
+        private void RenderHeader()
         {
             AppendLine($"#EXTM3U");
             AppendLine($"#EXT-X-PLAYLIST-TYPE:{_manifest.PlaylistType}");
@@ -34,9 +37,9 @@ namespace FastHls.Models.Manifests
             AppendLine($"#EXT-X-VERSION:{_manifest.Version}");
             AppendLine($"#EXT-X-MEDIA-SEQUENCE:{_manifest.MediaSequence}");
 
-            if (_manifest.DiscontinuitySequence.HasValue)
+            if (_manifest.DiscontinuitySequence > 0)
             {
-                AppendLine($"#EXT-X-DISCONTINUITY-SEQUENCE:{_manifest.DiscontinuitySequence.Value}");
+                AppendLine($"#EXT-X-DISCONTINUITY-SEQUENCE:{_manifest.DiscontinuitySequence}");
             }
 
             if (_manifest.PartDuration.HasValue)
@@ -60,11 +63,17 @@ namespace FastHls.Models.Manifests
             }
         }
 
-        private async Task RenderTimeline()
+        private void RenderTimeline()
         {
-            foreach (var file in _manifest.Timeline)
+            var discontinuityCounter = 0;
+            foreach (var item in _manifest.Timeline)
             {
-                Append(file.Render());
+                if (_manifest.DiscontinuitySequence > discontinuityCounter && item is Discontinuity)
+                {
+                    discontinuityCounter++;
+                    continue;
+                }
+                Append(item.Render());
             }
 
             foreach (var report in _manifest.RenditionReports)
