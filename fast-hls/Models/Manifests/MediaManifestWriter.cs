@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using FastHls.Abstractions;
-using FastHls.Models.Manifests;
 
 namespace FastHls.Models.Manifests
 {
-    public class MediaManifestWriter : AbstractManifestGenerator
+    public class MediaManifestWriter : AbstractManifestWriter
     {
         private readonly MediaManifest _manifest;
         private int? _lastMediaSequence = null;
 
-        public MediaManifestWriter(MediaManifest manifest, Stream output) : base(output, false)
+        public MediaManifestWriter(MediaManifest manifest, Stream output) : base(output)
         {
             _manifest = manifest;
         }

@@ -4,11 +4,11 @@ using FastHls.Abstractions;
 
 namespace FastHls.Models.Manifests
 {
-    public class MasterManifestWriter : AbstractManifestGenerator
+    public class MasterManifestWriter : AbstractManifestWriter
     {
         private readonly MasterManifest _masterManifest;
 
-        public MasterManifestWriter(MasterManifest masterManifest, Stream output): base(output, false)
+        public MasterManifestWriter(MasterManifest masterManifest, Stream output): base(output)
         {
             _masterManifest = masterManifest;
         }

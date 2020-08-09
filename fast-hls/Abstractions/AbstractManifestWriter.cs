@@ -6,21 +6,17 @@ using Microsoft.Extensions.ObjectPool;
 
 namespace FastHls.Abstractions
 {
-    public abstract class AbstractManifestGenerator
+    public abstract class AbstractManifestWriter
     {
         private readonly DefaultObjectPoolProvider _objectPoolProvider;
-        protected readonly ObjectPool<StringBuilder> _stringBuilderPool;
+        private readonly ObjectPool<StringBuilder> _stringBuilderPool;
 
         private readonly StringBuilder _playlist;
-        private readonly bool _continuousPersistence;
         private readonly Stream _output;
 
-        public AbstractManifestGenerator() : this(null, false) { }
-
-        public AbstractManifestGenerator(Stream output, bool continuousPersistence)
+        public AbstractManifestWriter(Stream output)
         {
             _output = output;
-            _continuousPersistence = continuousPersistence;
 
             _objectPoolProvider = new DefaultObjectPoolProvider();
             _stringBuilderPool = _objectPoolProvider.CreateStringBuilderPool();
@@ -41,14 +37,6 @@ namespace FastHls.Abstractions
         public async ValueTask WriteToStream(Stream output)
         {
             await output.WriteAsync(Encoding.UTF8.GetBytes(_playlist.ToString()));
-        }
-
-        private async ValueTask WriteContinuously(string text)
-        {
-            if (_continuousPersistence && _output != null)
-            {
-                await _output.WriteAsync(Encoding.UTF8.GetBytes(text));
-            }
         }
 
         public virtual async Task Finish()
