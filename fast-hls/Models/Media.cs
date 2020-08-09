@@ -11,7 +11,7 @@ namespace FastHls.Models
         public string Name { get; set; }
         public string? Uri { get; set; }
         public string? Language { get; set; }
-        public string AssocLanguage { get; set; }
+        public string? AssocLanguage { get; set; }
         public bool IsDefault { get; set; }
         public bool AutoSelect { get; set; }
         public bool Forced { get; set; }
