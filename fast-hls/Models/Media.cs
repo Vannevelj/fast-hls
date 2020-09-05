@@ -1,4 +1,4 @@
-using System.Text;
+using System.IO;
 using FastHls.Extensions;
 using FastHls.Models.Interfaces;
 
@@ -18,55 +18,51 @@ namespace FastHls.Models
         public string? InstreamId { get; set; }
         public string[]? Characteristics { get; set; }
 
-        public string Render()
+        public void Render(StreamWriter writer)
         {
-            var builder = new StringBuilder();
-
-            builder.Append($"#EXT-X-MEDIA:TYPE={MediaType},GROUP-ID=\"{GroupId}\",NAME=\"{Name}\"");
+            writer.Write($"#EXT-X-MEDIA:TYPE={MediaType},GROUP-ID=\"{GroupId}\",NAME=\"{Name}\"");
 
             if (Language != null)
             {
-                builder.Append($",LANGUAGE=\"{Language}\"");
+                writer.Write($",LANGUAGE=\"{Language}\"");
             }
 
             if (AssocLanguage != null)
             {
-                builder.Append($",ASSOC-LANGUAGE=\"{AssocLanguage}\"");
+                writer.Write($",ASSOC-LANGUAGE=\"{AssocLanguage}\"");
             }
 
             if (IsDefault)
             {
-                builder.Append(",DEFAULT=YES");
+                writer.Write(",DEFAULT=YES");
             }
 
             if (AutoSelect)
             {
-                builder.Append(",AUTOSELECT=YES");
+                writer.Write(",AUTOSELECT=YES");
             }
 
             if (Forced)
             {
-                builder.Append(",FORCED=YES");
+                writer.Write(",FORCED=YES");
             }
 
             if (InstreamId != null)
             {
-                builder.Append($",INSTREAM-ID=\"{InstreamId}\"");
+                writer.Write($",INSTREAM-ID=\"{InstreamId}\"");
             }
 
             if (Characteristics != null)
             {
-                builder.Append($",CHARACTERISTICS=\"{string.Join(",", Characteristics)}\"");
+                writer.Write($",CHARACTERISTICS=\"{string.Join(",", Characteristics)}\"");
             }
 
             if (Uri != null)
             {
-                builder.Append($",URI=\"{Uri}\"");
+                writer.Write($",URI=\"{Uri}\"");
             }
 
-            builder.AppendNormalizedNewline();
-
-            return builder.ToString();
+            writer.AppendNormalizedNewline();
         }
     }
 }

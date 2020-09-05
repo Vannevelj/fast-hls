@@ -1,4 +1,4 @@
-using System.Text;
+using System.IO;
 using FastHls.Extensions;
 using FastHls.Models.Interfaces;
 
@@ -10,18 +10,16 @@ namespace FastHls.Models
         public int LastMsn { get; set; }
         public int? LastPart { get; set; }
 
-        public string Render()
+        public void Render(StreamWriter writer)
         {
-            var builder = new StringBuilder();
-            builder.Append($"#EXT-X-RENDITION-REPORT:URI=\"{Path}\",LAST-MSN={LastMsn}");
+            writer.Write($"#EXT-X-RENDITION-REPORT:URI=\"{Path}\",LAST-MSN={LastMsn}");
 
             if (LastPart.HasValue)
             {
-                builder.Append($",LAST-PART={LastPart.Value}");
+                writer.Write($",LAST-PART={LastPart.Value}");
             }
 
-            builder.AppendNormalizedNewline();
-            return builder.ToString();
+            writer.AppendNormalizedNewline();
         }
     }
 }

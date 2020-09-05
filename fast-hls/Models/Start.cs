@@ -1,5 +1,5 @@
 using System;
-using System.Text;
+using System.IO;
 using FastHls.Extensions;
 using FastHls.Models.Interfaces;
 
@@ -10,19 +10,16 @@ namespace FastHls.Models.Manifests
         public TimeSpan Offset { get; set; }
         public bool? IsPrecise { get; set; }
 
-        public string Render()
+        public void Render(StreamWriter writer)
         {
-            var builder = new StringBuilder();
-            builder.Append(FormattableString.Invariant($"#EXT-X-START:TIME-OFFSET={Offset.TotalSeconds}"));
+            writer.Write(FormattableString.Invariant($"#EXT-X-START:TIME-OFFSET={Offset.TotalSeconds}"));
 
             if (IsPrecise.HasValue && IsPrecise.Value)
             {
-                builder.Append(",PRECISE=YES");
+                writer.Write(",PRECISE=YES");
             }
 
-            builder.AppendNormalizedNewline();
-
-            return builder.ToString();
+            writer.AppendNormalizedNewline();
         }
     }
 }

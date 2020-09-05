@@ -17,7 +17,7 @@ namespace FastHlsTests.Models
                 Uri = uri,
                 Language = language
             };
-            AssertEqualWithNewline(expected, sessionData.Render());
+            AssertStreamContentEqual(expected, sessionData);
         }
     }
 }

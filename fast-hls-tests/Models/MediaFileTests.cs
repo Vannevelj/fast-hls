@@ -18,7 +18,7 @@ http://example.com/movie1/fileSequenceA.ts")]
                 Duration = duration,
                 ByteRange = byteRange
             };
-            AssertEqualWithNewline(expected, mediaFile.Render());
+            AssertStreamContentEqual(expected, mediaFile);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace FastHlsTests.Models
                 InstreamId = instreamId,
                 Characteristics = characteristics
             };
-            AssertEqualWithNewline(expected, media.Render());
+            AssertStreamContentEqual(expected, media);
         }
     }
 }

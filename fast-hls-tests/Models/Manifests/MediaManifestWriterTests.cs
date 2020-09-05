@@ -29,7 +29,8 @@ namespace FastHlsTests.Models.Manifests
 #EXT-X-PLAYLIST-TYPE:EVENT
 #EXT-X-TARGETDURATION:10
 #EXT-X-VERSION:8
-#EXT-X-MEDIA-SEQUENCE:0")]
+#EXT-X-MEDIA-SEQUENCE:0
+")]
         public async Task WritesManifestHeader(int version, PlaylistType playlistType, double targetDuration, ServerControl? serverControl, double? partDuration, Start? start, Map? map, Encryption? encryption, string expected)
         {
             var manifest = new MediaManifest(
@@ -43,7 +44,7 @@ namespace FastHlsTests.Models.Manifests
                 encryption
             );
             
-            AssertEqualWithNewline(expected, await RenderManifest(manifest));
+            Assert.Equal(expected, await RenderManifest(manifest));
         }
 
         [Fact]

@@ -1,9 +1,10 @@
-﻿using FastHls.Models.Interfaces;
+using System.IO;
+using FastHls.Models.Interfaces;
 
 namespace FastHls.Models
 {
     public struct EndList : IManifestItem
     {
-        public string Render() => "#EXT-X-ENDLIST";
+        public void Render(StreamWriter writer) => writer.Write("#EXT-X-ENDLIST");
     }
 }

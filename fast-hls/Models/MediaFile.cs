@@ -1,5 +1,6 @@
 using System;
-using System.Text;
+using System.IO;
+using FastHls.Extensions;
 using FastHls.Models.Interfaces;
 
 namespace FastHls.Models
@@ -10,17 +11,14 @@ namespace FastHls.Models
         public double Duration { get; set; }
         public ByteRange? ByteRange { get; set; }
 
-        public string Render()
+        public void Render(StreamWriter writer)
         {
-            var sb = new StringBuilder();
-            sb.AppendLine(FormattableString.Invariant($"#EXTINF:{Duration:F1},"));
+            writer.AppendNormalizedline(FormattableString.Invariant($"#EXTINF:{Duration:F1},"));
             if (ByteRange.HasValue)
             {
-                sb.AppendLine($"#EXT-X-BYTERANGE:{ByteRange}");
+                writer.AppendNormalizedline($"#EXT-X-BYTERANGE:{ByteRange}");
             }
-            sb.AppendLine(Path);
-
-            return sb.ToString();
+            writer.AppendNormalizedline(Path);
         }
     }
 }

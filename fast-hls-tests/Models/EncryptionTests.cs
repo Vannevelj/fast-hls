@@ -24,7 +24,7 @@ namespace FastHlsTests.Models
                 IV = iv,
                 KeyFormat = keyformat
             };
-            AssertEqualWithNewline(expected, encryption.Render());
+            AssertStreamContentEqual(expected, encryption);
         }
     }
 }

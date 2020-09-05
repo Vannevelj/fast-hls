@@ -1,7 +1,9 @@
+using System.IO;
+
 namespace FastHls.Models.Interfaces
 {
     public interface IManifestItem
     {
-        string Render();
+        void Render(StreamWriter writer);
     }
 }

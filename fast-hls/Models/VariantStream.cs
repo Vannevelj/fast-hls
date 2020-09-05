@@ -1,6 +1,6 @@
 
 
-using System.Text;
+using System.IO;
 using FastHls.Extensions;
 using FastHls.Models.Interfaces;
 
@@ -18,50 +18,47 @@ namespace FastHls.Models
         public string? Subtitles { get; set; }
         public string? ClosedCaptions { get; set; }
 
-        public string Render()
+        public void Render(StreamWriter writer)
         {
-            var builder = new StringBuilder();
-
-            builder.Append($"#EXT-X-STREAM-INF:BANDWIDTH={Bandwidth}");
+            writer.Write($"#EXT-X-STREAM-INF:BANDWIDTH={Bandwidth}");
 
             if (AverageBandwidth.HasValue)
             {
-                builder.Append($",AVERAGE-BANDWIDTH={AverageBandwidth.Value}");
+                writer.Write($",AVERAGE-BANDWIDTH={AverageBandwidth.Value}");
             }
 
             if (Codecs != null)
             {
-                builder.Append($",CODECS=\"{string.Join(",", Codecs)}\"");
+                writer.Write($",CODECS=\"{string.Join(",", Codecs)}\"");
             }
 
             if (Resolution.HasValue)
             {
-                builder.Append($",RESOLUTION={Resolution.Value.Width}x{Resolution.Value.Height}");
+                writer.Write($",RESOLUTION={Resolution.Value.Width}x{Resolution.Value.Height}");
             }
 
             if (Audio != null)
             {
-                builder.Append($",AUDIO=\"{Audio}\"");
+                writer.Write($",AUDIO=\"{Audio}\"");
             }
 
             if (Video != null)
             {
-                builder.Append($",VIDEO=\"{Video}\"");
+                writer.Write($",VIDEO=\"{Video}\"");
             }
 
             if (Subtitles != null)
             {
-                builder.Append($",SUBTITLES=\"{Subtitles}\"");
+                writer.Write($",SUBTITLES=\"{Subtitles}\"");
             }
 
             if (ClosedCaptions != null)
             {
-                builder.Append($",CLOSED-CAPTIONS=\"{ClosedCaptions}\"");
+                writer.Write($",CLOSED-CAPTIONS=\"{ClosedCaptions}\"");
             }
 
-            builder.AppendNormalizedNewline();
-            builder.AppendNormalizedline(Uri);
-            return builder.ToString();
+            writer.AppendNormalizedNewline();
+            writer.AppendNormalizedline(Uri);
         }
     }
 }

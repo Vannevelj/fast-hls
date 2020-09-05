@@ -1,4 +1,4 @@
-using System.Text;
+using System.IO;
 using FastHls.Extensions;
 using FastHls.Models.Interfaces;
 
@@ -12,34 +12,32 @@ namespace FastHls.Models
         public string? KeyFormat { get; set; }
         public int[]? KeyFormatVersions { get; set; }
 
-        public string Render()
+        public void Render(StreamWriter writer)
         {
-            var builder = new StringBuilder();
-            builder.Append($"#EXT-X-KEY:METHOD={EncryptionKind}");
+            
+            writer.Write($"#EXT-X-KEY:METHOD={EncryptionKind}");
 
             if (Uri != null)
             {
-                builder.Append($",URI=\"{Uri}\"");
+                writer.Write($",URI=\"{Uri}\"");
             }
 
             if (IV != null)
             {
-                builder.Append($",IV=\"{IV}\"");
+                writer.Write($",IV=\"{IV}\"");
             }
 
             if (KeyFormat != null)
             {
-                builder.Append($",KEYFORMAT=\"{KeyFormat}\"");
+                writer.Write($",KEYFORMAT=\"{KeyFormat}\"");
             }
 
             if (KeyFormatVersions != null)
             {
-                builder.Append($",KEYFORMATVERSIONS=\"{string.Join("/", KeyFormatVersions)}\"");
+                writer.Write($",KEYFORMATVERSIONS=\"{string.Join("/", KeyFormatVersions)}\"");
             }
 
-            builder.AppendNormalizedNewline();
-
-            return builder.ToString();
+            writer.AppendNormalizedNewline();
         }
     }
 }

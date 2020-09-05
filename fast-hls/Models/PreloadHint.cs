@@ -1,4 +1,4 @@
-using System.Text;
+using System.IO;
 using FastHls.Extensions;
 using FastHls.Models.Interfaces;
 
@@ -11,23 +11,21 @@ namespace FastHls.Models
         public int? Start { get; set; }
         public int? Length { get; set; }
 
-        public string Render()
+        public void Render(StreamWriter writer)
         {
-            var builder = new StringBuilder();
-            builder.Append($"#EXT-X-PRELOAD-HINT:TYPE={Type},URI=\"{Path}\"");
+            writer.Write($"#EXT-X-PRELOAD-HINT:TYPE={Type},URI=\"{Path}\"");
 
             if (Start.HasValue)
             {
-                builder.Append($",BYTERANGE-START=\"{Start.Value}\"");
+                writer.Write($",BYTERANGE-START=\"{Start.Value}\"");
             }
 
             if (Length.HasValue)
             {
-                builder.Append($",BYTERANGE-LENGTH=\"{Length.Value}\"");
+                writer.Write($",BYTERANGE-LENGTH=\"{Length.Value}\"");
             }
 
-            builder.AppendNormalizedNewline();
-            return builder.ToString();
+            writer.AppendNormalizedNewline();
         }
     }
 }

@@ -1,5 +1,6 @@
 using FastHls.Models;
 using Xunit;
+using static FastHlsTests.AssertExtensions;
 
 namespace FastHlsTests.Models
 {
@@ -10,7 +11,7 @@ namespace FastHlsTests.Models
         public void WritesDiscontinuity(string expected)
         {
             var discontinuity = new Discontinuity();
-            Assert.Equal(expected, discontinuity.Render());
+            AssertStreamContentEqual(expected, discontinuity, hasNewline: false);
         }
     }
 }

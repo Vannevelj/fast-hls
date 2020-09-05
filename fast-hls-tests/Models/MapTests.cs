@@ -16,7 +16,7 @@ namespace FastHlsTests.Models
                 Uri = uri,
                 ByteRange = new ByteRange(length, offset)
             };
-            AssertEqualWithNewline(expected, map.Render());
+            AssertStreamContentEqual(expected, map);
         }
     }
 }

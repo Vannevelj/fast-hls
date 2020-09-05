@@ -17,7 +17,7 @@ namespace FastHlsTests.Models
                 HoldBack = holdBack,
                 PartHoldBack = partHoldBack
             };
-            AssertEqualWithNewline(expected, serverControl.Render());
+            AssertStreamContentEqual(expected, serverControl);
         }
     }
 }

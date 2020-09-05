@@ -16,7 +16,7 @@ namespace FastHlsTests.Models
                 Offset = TimeSpan.FromSeconds(offset),
                 IsPrecise = isPrecise
             };
-            AssertEqualWithNewline(expected, startTag.Render());
+            AssertStreamContentEqual(expected, startTag);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using FastHls.Models;
+using FastHls.Models;
 using Xunit;
 
 namespace FastHlsTests.Models
@@ -10,7 +10,7 @@ namespace FastHlsTests.Models
         public void WritesEndList(string expected)
         {
             var endList = new EndList();
-            Assert.Equal(expected, endList.Render());
+            AssertExtensions.AssertStreamContentEqual(expected, endList, hasNewline: false);
         }
     }
 }

@@ -25,22 +25,22 @@ namespace FastHls.Models.Manifests
 
             foreach (var media in _masterManifest.Media)
             {
-                Append(media.Render());
+                media.Render(Writer);
             }
 
             foreach (var variantStream in _masterManifest.VariantStreams)
             {
-                Append(variantStream.Render());
+                variantStream.Render(Writer);
             }
 
             foreach (var iframeVariantStream in _masterManifest.IFrameVariantStreams)
             {
-                Append(iframeVariantStream.Render());
+                iframeVariantStream.Render(Writer);
             }
 
             foreach (var sessionData in _masterManifest.SessionData)
             {
-                Append(sessionData.Render());
+                sessionData.Render(Writer);
             }
 
             await WriteToOutput();

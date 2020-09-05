@@ -1,4 +1,4 @@
-using System.Text;
+using System.IO;
 using FastHls.Extensions;
 using FastHls.Models.Interfaces;
 
@@ -11,29 +11,25 @@ namespace FastHls.Models
         public double? HoldBack { get; set; }
         public double? PartHoldBack { get; set; }
 
-        public string Render()
+        public void Render(StreamWriter writer)
         {
-            var sb = new StringBuilder();
-
-            sb.Append($"#EXT-X-SERVER-CONTROL:CAN-BLOCK-RELOAD={( CanBlockReload ? "YES" : "NO" )}");
+            writer.Write($"#EXT-X-SERVER-CONTROL:CAN-BLOCK-RELOAD={( CanBlockReload ? "YES" : "NO" )}");
             if (CanSkipUntil.HasValue)
             {
-                sb.Append($",CAN-SKIP-UNTIL={CanSkipUntil.Value}");
+                writer.Write($",CAN-SKIP-UNTIL={CanSkipUntil.Value}");
             }
 
             if (HoldBack.HasValue)
             {
-                sb.Append($",HOLD-BACK={HoldBack.Value}");
+                writer.Write($",HOLD-BACK={HoldBack.Value}");
             }
 
             if (PartHoldBack.HasValue)
             {
-                sb.Append($",PART-HOLD-BACK={PartHoldBack.Value}");
+                writer.Write($",PART-HOLD-BACK={PartHoldBack.Value}");
             }
 
-            sb.AppendNormalizedNewline();
-
-            return sb.ToString();
+            writer.AppendNormalizedNewline();
         }
     }
 }

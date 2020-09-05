@@ -20,7 +20,7 @@ namespace FastHlsTests.Models
                 HasGap = hasGap ?? null,
                 ByteRange = length.HasValue ? new ByteRange(length.Value, offset) : (ByteRange?) null
             };
-            AssertEqualWithNewline(expected, mediaFile.Render());
+            AssertStreamContentEqual(expected, mediaFile);
         }
     }
 }

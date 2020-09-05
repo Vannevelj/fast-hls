@@ -29,7 +29,7 @@ namespace FastHls.Models.Manifests
             AppendLine($"#EXT-X-PLAYLIST-TYPE:{_manifest.PlaylistType}");
             if (_manifest.ServerControl.HasValue)
             {
-                AppendLine(_manifest.ServerControl.Value.Render());
+                _manifest.ServerControl.Value.Render(Writer);
             }
             AppendLine($"#EXT-X-TARGETDURATION:{_manifest.TargetDuration}");
             AppendLine($"#EXT-X-VERSION:{_manifest.Version}");
@@ -47,17 +47,17 @@ namespace FastHls.Models.Manifests
 
             if (_manifest.Start.HasValue)
             {
-                Append(_manifest.Start.Value.Render());
+                _manifest.Start.Value.Render(Writer);
             }
 
             if (_manifest.Encryption.HasValue)
             {
-                Append(_manifest.Encryption.Value.Render());
+                _manifest.Encryption.Value.Render(Writer);
             }
 
             if (_manifest.Map.HasValue)
             {
-                Append(_manifest.Map.Value.Render());
+                _manifest.Map.Value.Render(Writer);
             }
         }
 
@@ -78,17 +78,17 @@ namespace FastHls.Models.Manifests
                     mediaCounter++;
                     continue;
                 }
-                Append(item.Render());
+                item.Render(Writer);
             }
 
             foreach (var report in _manifest.RenditionReports)
             {
-                Append(report.Render());
+                report.Render(Writer);
             }
 
             if (_manifest.PlaylistType == PlaylistType.VOD)
             {
-                AppendLine(new EndList().Render());
+                new EndList().Render(Writer);
             }
         }
     }

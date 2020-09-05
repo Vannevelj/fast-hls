@@ -1,4 +1,4 @@
-using System.Text;
+using System.IO;
 using FastHls.Extensions;
 using FastHls.Models.Interfaces;
 
@@ -12,28 +12,26 @@ namespace FastHls.Models
         public ByteRange? ByteRange { get; set; }
         public bool? HasGap { get; set; }
 
-        public string Render()
+        public void Render(StreamWriter writer)
         {
-            var builder = new StringBuilder();
-            builder.Append($"#EXT-X-PART:DURATION={Duration},URI=\"{Path}\"");
+            writer.Write($"#EXT-X-PART:DURATION={Duration},URI=\"{Path}\"");
 
             if (IsIndependent.HasValue)
             {
-                builder.Append($",INDEPENDENT={( IsIndependent.Value ? "YES" : "NO" )}");
+                writer.Write($",INDEPENDENT={( IsIndependent.Value ? "YES" : "NO" )}");
             }
 
             if (ByteRange.HasValue)
             {
-                builder.Append($",BYTERANGE={ByteRange.Value}");
+                writer.Write($",BYTERANGE={ByteRange.Value}");
             }
 
             if (HasGap.HasValue)
             {
-                builder.Append($",GAP={( HasGap.Value ? "YES" : "NO" )}");
+                writer.Write($",GAP={( HasGap.Value ? "YES" : "NO" )}");
             }
 
-            builder.AppendNormalizedNewline();
-            return builder.ToString();
+            writer.AppendNormalizedNewline();
         }
     }
 }

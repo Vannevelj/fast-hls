@@ -27,7 +27,7 @@ namespace FastHlsTests.Models
                 Resolution = resolution,
                 Video = video
             };
-            AssertEqualWithNewline(expected, iframeVariantStream.Render());
+            AssertStreamContentEqual(expected, iframeVariantStream);
         }
     }
 }

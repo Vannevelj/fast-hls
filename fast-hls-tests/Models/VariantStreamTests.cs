@@ -30,7 +30,7 @@ high.m3u8" },
                 Subtitles = subtitles,
                 ClosedCaptions = closedCaptions
             };
-            AssertEqualWithNewline(expected, variantStream.Render());
+            AssertStreamContentEqual(expected, variantStream);
         }
     }
 }

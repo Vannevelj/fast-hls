@@ -17,7 +17,7 @@ namespace FastHlsTests.Models
                 LastMsn = lastMsn,
                 LastPart = lastPart
             };
-            AssertEqualWithNewline(expected, renditionReport.Render());
+            AssertStreamContentEqual(expected, renditionReport);
         }
     }
 }

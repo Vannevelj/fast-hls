@@ -17,7 +17,7 @@ namespace FastHlsTests.Models
                 Start = start,
                 Length = length
             };
-            AssertEqualWithNewline(expected, preloadHint.Render());
+            AssertStreamContentEqual(expected, preloadHint);
         }
     }
 }

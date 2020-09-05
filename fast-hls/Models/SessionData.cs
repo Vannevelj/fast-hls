@@ -1,4 +1,4 @@
-using System.Text;
+using System.IO;
 using FastHls.Extensions;
 using FastHls.Models.Interfaces;
 
@@ -11,28 +11,26 @@ namespace FastHls.Models
         public string? Uri { get; set; }
         public string? Language { get; set; }
 
-        public string Render()
+        public void Render(StreamWriter writer)
         {
-            var builder = new StringBuilder();
-            builder.Append($"#EXT-X-SESSION-DATA:DATA-ID=\"{DataId}\"");
+            writer.Write($"#EXT-X-SESSION-DATA:DATA-ID=\"{DataId}\"");
 
             if (Value != null)
             {
-                builder.Append($",VALUE=\"{Value}\"");
+                writer.Write($",VALUE=\"{Value}\"");
             }
 
             if (Uri != null)
             {
-                builder.Append($",URI=\"{Uri}\"");
+                writer.Write($",URI=\"{Uri}\"");
             }
 
             if (Language != null)
             {
-                builder.Append($",LANGUAGE=\"{Language}\"");
+                writer.Write($",LANGUAGE=\"{Language}\"");
             }
 
-            builder.AppendNormalizedNewline();
-            return builder.ToString();
+            writer.AppendNormalizedNewline();
         }
     }
 }

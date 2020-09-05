@@ -7,12 +7,12 @@ namespace FastHlsBenchmarks
     {
         public static async Task Main(string[] args)
         {
-            BenchmarkRunner.Run<ManifestGeneratorBenchmarks>();
+            //BenchmarkRunner.Run<ManifestGeneratorBenchmarks>();
 
-            //for(var i = 0; i < 50; i++)
-            //{
-            //    await new ManifestGeneratorBenchmarks().MediaManifest();
-            //}
+            for (var i = 0; i < 50; i++)
+            {
+                await new ManifestGeneratorBenchmarks().MediaManifest();
+            }
 
         }
     }

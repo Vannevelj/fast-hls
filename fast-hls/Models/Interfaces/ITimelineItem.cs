@@ -1,7 +1,9 @@
+using System.IO;
+
 namespace FastHls.Models.Interfaces
 {
     public interface ITimelineItem
     {
-        string Render();
+        void Render(StreamWriter writer);
     }
 }

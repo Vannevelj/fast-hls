@@ -2,9 +2,9 @@ namespace FastHls.Models
 {
     public class MediaType
     {
-        private readonly string value;
+        private readonly string _value;
 
-        private MediaType(string value) => this.value = value;
+        private MediaType(string value) => _value = value;
 
         public static readonly MediaType AUDIO = "AUDIO";
         public static readonly MediaType VIDEO = "VIDEO";
@@ -12,6 +12,6 @@ namespace FastHls.Models
         public static readonly MediaType CLOSEDCAPTIONS = "CLOSED-CAPTIONS";
 
         public static implicit operator MediaType(string s) => new MediaType(s);
-        public override string ToString() => value;
+        public override string ToString() => _value;
     }
 }
